@@ -54,13 +54,14 @@ The project follows a **Layered Architecture**:
 ---
 
 ## Project Structure
-###Hotel-Booking-System/
--ui/ # JavaFX Controllers & FXML files
--service/ # Business logic layer
--dao/ # Database access objects
--model/ # Entity classes
--db/ # SQL scripts
--Readme.md
+
+### Hotel-Booking-System/
+- ui/ # JavaFX Controllers & FXML files
+- service/ # Business logic layer
+- dao/ # Database access objects
+- model/ # Entity classes
+- db/ # SQL scripts
+- Readme.md
 
 ---
 ## Development Methodology
