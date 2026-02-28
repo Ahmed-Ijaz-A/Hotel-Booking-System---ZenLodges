@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.xcoders.controller.RegisterController"
+           styleClass="root-pane"
+           prefWidth="900" prefHeight="600">
+
+    <!-- Centred card -->
+    <VBox alignment="CENTER" spacing="15"
+          styleClass="card"
+          maxWidth="440" maxHeight="480">
+
+        <padding>
+            <Insets top="40" right="40" bottom="40" left="40"/>
+        </padding>
+
+        <!-- Title -->
+        <Label text="Create Account" styleClass="title-label">
+            <font><Font size="22"/></font>
+        </Label>
+
+        <!-- Subtitle -->
+        <Label text="Fill in the details below" styleClass="subtitle-label"/>
+
+        <!-- Form grid -->
+        <GridPane hgap="12" vgap="12" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints minWidth="100" prefWidth="100"/>
+                <ColumnConstraints minWidth="220" prefWidth="240"/>
+            </columnConstraints>
+
+            <!-- Name -->
+            <Label text="Name" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="nameField" promptText="Full name"
+                       styleClass="input-field"
+                       GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <!-- Email -->
+            <Label text="Email" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="emailField" promptText="Email address"
+                       styleClass="input-field"
+                       GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <!-- Password -->
+            <Label text="Password" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <PasswordField fx:id="passwordField" promptText="Password"
+                           styleClass="input-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <!-- Confirm Password -->
+            <Label text="Confirm" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Confirm password"
+                           styleClass="input-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        </GridPane>
+
+        <!-- Error / success message -->
+        <Label fx:id="messageLabel" text="" styleClass="error-label"
+               wrapText="true" maxWidth="340"/>
+
+        <!-- Register button -->
+        <Button text="Register" onAction="#handleRegister"
+                styleClass="primary-btn" maxWidth="340" prefHeight="38"/>
+
+        <!-- Back to login link -->
+        <Hyperlink text="Back to Login" onAction="#handleBackToLogin"
+                   styleClass="link"/>
+
+    </VBox>
+
+</StackPane>
