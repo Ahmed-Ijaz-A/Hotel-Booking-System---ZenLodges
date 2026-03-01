@@ -59,11 +59,9 @@ public class LoginController {
 
         errorLabel.setText("");
 
-        if ("ADMIN".equals(user.getRole())) {
-            loadScene("/fxml/AdminDashboard.fxml");
-        } else {
-            loadScene("/fxml/GuestDashboard.fxml");
-        }
+        // Both ADMIN and GUEST go to AdminDashboard for now
+        // (GuestDashboard.fxml is not yet implemented)
+        loadScene("/fxml/AdminDashboard.fxml");
     }
 
     @FXML
