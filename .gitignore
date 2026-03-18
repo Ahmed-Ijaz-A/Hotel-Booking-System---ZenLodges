@@ -7,7 +7,3 @@ target/
 .DS_Store
 Thumbs.db
 
-# Local DB files – never committed, each developer manages their own
-src/main/resources/db.properties
-src/main/resources/db.properties.example
-src/main/resources/schema.sql

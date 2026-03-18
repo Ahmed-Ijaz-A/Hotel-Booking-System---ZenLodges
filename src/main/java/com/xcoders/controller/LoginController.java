@@ -50,7 +50,14 @@ public class LoginController {
             return;
         }
 
-        User user = userService.login(email, password);
+        User user;
+        try {
+            user = userService.login(email, password);
+        } catch (RuntimeException e) {
+            errorLabel.setText("*Database error. Check db.properties credentials.");
+            System.err.println("Login failed due to DB error: " + e.getMessage());
+            return;
+        }
 
         if (user == null) {
             errorLabel.setText("*Invalid email or password.");
