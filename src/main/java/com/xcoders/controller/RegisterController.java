@@ -48,15 +48,30 @@ public class RegisterController {
             return;
         }
 
+        // Validate duplicate email with a clear, user-facing message
+        if (userService.emailExists(email)) {
+            messageLabel.setStyle("-fx-text-fill: #dc3545;");
+            messageLabel.setText("Email is already registered. Please use another email.");
+            return;
+        }
+
         // Attempt registration
-        boolean success = userService.register(name, email, password);
+        boolean success;
+        try {
+            success = userService.register(name, email, password);
+        } catch (RuntimeException e) {
+            messageLabel.setStyle("-fx-text-fill: #dc3545;");
+            messageLabel.setText("Database error. Check db.properties credentials.");
+            System.err.println("Registration failed due to DB error: " + e.getMessage());
+            return;
+        }
 
         if (success) {
             showAlert(Alert.AlertType.INFORMATION, "Success", "Account created! You can now log in.");
             loadScene("/fxml/Login.fxml");
         } else {
             messageLabel.setStyle("-fx-text-fill: #dc3545;");
-            messageLabel.setText("Email already exists or registration failed.");
+            messageLabel.setText("Registration failed. Please try again.");
         }
     }
 

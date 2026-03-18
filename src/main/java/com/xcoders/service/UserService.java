@@ -12,6 +12,16 @@ public class UserService {
 
     private final UserDAO userDAO = new UserDAO();
 
+    /**
+     * Checks whether an email is already registered.
+     */
+    public boolean emailExists(String email) {
+        if (email == null || email.isBlank()) {
+            return false;
+        }
+        return userDAO.emailExists(email.trim());
+    }
+
     // ── Login ──────────────────────────────────────────────
 
     /**

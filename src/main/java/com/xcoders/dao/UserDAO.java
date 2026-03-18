@@ -40,6 +40,7 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error validating user: " + e.getMessage());
+            throw new RuntimeException("Database error while validating user.", e);
         }
 
         return null;
@@ -69,9 +70,8 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error registering user: " + e.getMessage());
+            throw new RuntimeException("Database error while registering user.", e);
         }
-
-        return false;
     }
 
     // ── Email-exists check ─────────────────────────────────
@@ -96,9 +96,8 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error checking email: " + e.getMessage());
+            throw new RuntimeException("Database error while checking email.", e);
         }
-
-        return false;
     }
 
     // ── Helper ─────────────────────────────────────────────

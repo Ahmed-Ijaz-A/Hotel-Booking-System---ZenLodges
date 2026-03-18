@@ -1,0 +1,13 @@
+# ─────────────────────────────────────────────────────────────
+# ZenLodges – Database Configuration Template
+#
+# Copy this file to db.properties (same folder) and fill in
+# your own values.  db.properties is git-ignored so each
+# developer keeps their own local settings.
+# ─────────────────────────────────────────────────────────────
+
+db.host=localhost
+db.port=3306
+db.name=hotel_booking_system
+db.user=root
+db.password=

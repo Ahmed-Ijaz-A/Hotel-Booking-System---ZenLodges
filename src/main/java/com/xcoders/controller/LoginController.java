@@ -50,7 +50,14 @@ public class LoginController {
             return;
         }
 
-        User user = userService.login(email, password);
+        User user;
+        try {
+            user = userService.login(email, password);
+        } catch (RuntimeException e) {
+            errorLabel.setText("*Database error. Check db.properties credentials.");
+            System.err.println("Login failed due to DB error: " + e.getMessage());
+            return;
+        }
 
         if (user == null) {
             errorLabel.setText("*Invalid email or password.");
@@ -59,11 +66,9 @@ public class LoginController {
 
         errorLabel.setText("");
 
-        if ("ADMIN".equals(user.getRole())) {
-            loadScene("/fxml/AdminDashboard.fxml");
-        } else {
-            loadScene("/fxml/GuestDashboard.fxml");
-        }
+        // Both ADMIN and GUEST go to AdminDashboard for now
+        // (GuestDashboard.fxml is not yet implemented)
+        loadScene("/fxml/AdminDashboard.fxml");
     }
 
     @FXML
