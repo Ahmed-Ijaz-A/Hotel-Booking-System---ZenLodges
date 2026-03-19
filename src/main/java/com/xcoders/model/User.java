@@ -12,7 +12,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String role;       // "ADMIN" or "GUEST"
+    private String role;       // "PLATFORM_ADMIN" | "HOTEL_ADMIN" | "USER"
     private String status;     // "ACTIVE" or "BLOCKED"
     private Timestamp createdAt;
 
@@ -97,6 +97,36 @@ public class User {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    // ── Role Helper Methods ────────────────────────────────
+    
+    /**
+     * Check if user is a Platform Admin
+     */
+    public boolean isPlatformAdmin() {
+        return "PLATFORM_ADMIN".equals(role);
+    }
+
+    /**
+     * Check if user is a Hotel Admin
+     */
+    public boolean isHotelAdmin() {
+        return "HOTEL_ADMIN".equals(role);
+    }
+
+    /**
+     * Check if user is a regular User
+     */
+    public boolean isUser() {
+        return "USER".equals(role);
+    }
+
+    /**
+     * Check if user is any type of admin
+     */
+    public boolean isAdmin() {
+        return isPlatformAdmin() || isHotelAdmin();
     }
 
     // ── toString ───────────────────────────────────────────
