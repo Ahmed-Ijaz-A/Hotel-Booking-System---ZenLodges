@@ -48,7 +48,7 @@ public final class DBConnection {
         PORT     = props.getProperty("db.port",     "3306");
         DATABASE = props.getProperty("db.name",     "hotel_booking_system");
         USER     = props.getProperty("db.user",     "root");
-        PASSWORD = props.getProperty("db.password", "");
+        PASSWORD = props.getProperty("db.password", "root");
         URL      = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE
                  + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     }

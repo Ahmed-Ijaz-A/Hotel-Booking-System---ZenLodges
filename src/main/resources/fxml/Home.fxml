@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx" 
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.xcoders.controller.HomePageController"
+            stylesheets="@../styles/style.css"
+            prefWidth="900" prefHeight="700">
+
+    <!-- ╔════════════════════════════════════════════════════════════════╗ -->
+    <!-- ║                    NAVIGATION BAR (TOP)                        ║ -->
+    <!-- ╚════════════════════════════════════════════════════════════════╝ -->
+    <top>
+        <HBox styleClass="navbar" spacing="0" style="-fx-padding: 15 30; -fx-background-color: #ffffff; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
+            
+            <!-- Logo -->
+            <Label text="ZenLodges" styleClass="navbar-logo" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #003cfd;">
+                <HBox.margin>
+                    <Insets right="80"/>
+                </HBox.margin>
+            </Label>
+
+            <!-- Menu Items -->
+            <Label text="Home" styleClass="navbar-link" onMouseClicked="#onHomeClick" style="-fx-cursor: hand; -fx-font-size: 14;"/>
+            <Label text="Search Hotels" styleClass="navbar-link" onMouseClicked="#onSearchHotelsClick" style="-fx-cursor: hand; -fx-font-size: 14;"/>
+            <Label text="Contact" styleClass="navbar-link" onMouseClicked="#onContactClick" style="-fx-cursor: hand; -fx-font-size: 14;"/>
+            <Label text="Login/Register" styleClass="navbar-link" onMouseClicked="#onLoginRegisterClick" style="-fx-cursor: hand; -fx-font-size: 14;">
+                <HBox.margin>
+                    <Insets right="50"/>
+                </HBox.margin>
+            </Label>
+
+        </HBox>
+    </top>
+
+    <!-- ╔════════════════════════════════════════════════════════════════╗ -->
+    <!-- ║                       MAIN CONTENT                             ║ -->
+    <!-- ╚════════════════════════════════════════════════════════════════╝ -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: #f8f9fa; -fx-control-inner-background: #f8f9fa;">
+            <VBox spacing="0" style="-fx-fill-height: true; -fx-background-color: #f8f9fa;">
+            
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- HERO SECTION                                              -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <VBox spacing="30" style="-fx-padding: 100 40; -fx-background-color: #f8f9fa; -fx-alignment: center;">
+                    
+                    <!-- System Name -->
+                    <Label text="ZenLodges" style="-fx-font-size: 48; -fx-font-weight: bold; -fx-text-fill: #003cfd;"/>
+
+                    <!-- Short Description -->
+                    <Label text="Your perfect hotel booking experience starts here" style="-fx-font-size: 18; -fx-text-fill: #666666;"/>
+
+                    <!-- CTA Buttons -->
+                    <HBox spacing="20" style="-fx-alignment: center;">
+                        <Button fx:id="searchHotelsBtn" text="Search Hotels" styleClass="btn-primary" onAction="#onSearchHotelsClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
+                        <Button fx:id="loginBtn" text="Login" styleClass="btn-primary" onAction="#onLoginClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
+                    </HBox>
+
+                </VBox>
+            
+            </VBox>
+        </ScrollPane>
+    </center>
+    <!-- ╔════════════════════════════════════════════════════════════════╗ -->
+    <!-- ║                        FOOTER (BOTTOM)                         ║ -->
+    <!-- ╚════════════════════════════════════════════════════════════════╝ -->
+    <bottom>
+    </bottom>
+
+</BorderPane>
