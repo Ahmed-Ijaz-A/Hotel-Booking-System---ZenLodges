@@ -4,7 +4,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -65,6 +67,27 @@
                         <Button fx:id="loginBtn" text="Login" styleClass="btn-primary" onAction="#onLoginClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
                     </HBox>
 
+                </VBox>
+
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- FEATURED HOTELS SECTION                                    -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <VBox spacing="20" style="-fx-padding: 60 40; -fx-background-color: #ffffff;">
+                    <Label text="Featured Hotels" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #003cfd;"/>
+                    <Label text="Browse our approved partner hotels" style="-fx-font-size: 14; -fx-text-fill: #666666;"/>
+                    
+                    <!-- Hotel Cards Grid -->
+                    <GridPane fx:id="hotelGridPane" hgap="20" vgap="20" style="-fx-padding: 20 0;">
+                        <columnConstraints>
+                            <javafx.scene.layout.ColumnConstraints percentWidth="33"/>
+                            <javafx.scene.layout.ColumnConstraints percentWidth="33"/>
+                            <javafx.scene.layout.ColumnConstraints percentWidth="33"/>
+                        </columnConstraints>
+                    </GridPane>
+                    
+                    <!-- Empty State -->
+                    <Label fx:id="noHotelsLabel" text="No hotels available yet. Check back soon!" 
+                           style="-fx-font-size: 14; -fx-text-fill: #95a5a6; -fx-alignment: center;"/>
                 </VBox>
             
             </VBox>

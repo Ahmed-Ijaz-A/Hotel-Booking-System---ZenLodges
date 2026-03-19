@@ -1,20 +1,31 @@
 package com.xcoders.controller;
 
-import com.xcoders.model.Hotel;
-import com.xcoders.model.User;
-import com.xcoders.service.HotelService;
-import com.xcoders.service.UserService;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import com.xcoders.model.Hotel;
+import com.xcoders.model.User;
+import com.xcoders.service.HotelImageService;
+import com.xcoders.service.HotelService;
+import com.xcoders.service.UserService;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Controller for HotelAndAdminRegistration.fxml
@@ -36,17 +47,30 @@ public class HotelAndAdminRegistrationController implements Initializable {
     @FXML private ComboBox<String> hotelTypeCombo;
     @FXML private TextArea descriptionArea;
 
+    // Image Upload Fields
+    @FXML private Button chooseMainImageButton;
+    @FXML private Label mainImageLabel;
+    @FXML private Button chooseReferenceImagesButton;
+    @FXML private Label referenceImagesLabel;
+    @FXML private VBox selectedFilesContainer;
+
     // Status/Result Fields
     @FXML private Label statusLabel;
     @FXML private VBox successBox;
 
+    // File storage
+    private File selectedMainImageFile;
+    private List<File> selectedReferenceImageFiles = new ArrayList<>();
+    
     private UserService userService;
     private HotelService hotelService;
+    private HotelImageService imageService;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         userService = new UserService();
         hotelService = new HotelService();
+        imageService = new HotelImageService();
         
         // Set default hotel type
         if (hotelTypeCombo.getItems().isEmpty()) {
@@ -97,6 +121,28 @@ public class HotelAndAdminRegistrationController implements Initializable {
             // Status defaults to PENDING
 
             hotelService.registerHotel(hotel);
+            
+            // Get the created hotel ID (we need to fetch it back)
+            List<Hotel> hotels = hotelService.getHotelsByAdminId(createdUser.getUserId());
+            if (hotels.isEmpty()) {
+                showError("Hotel was created but could not be found. Please try again.");
+                return;
+            }
+            
+            Hotel createdHotel = hotels.get(0);
+
+            // Step 3: Upload hotel images
+            if (!imageService.uploadImage(createdHotel.getHotelId(), selectedMainImageFile, "MAIN")) {
+                showError("Hotel created but failed to upload main image. Please re-upload from hotel admin panel.");
+                return;
+            }
+
+            // Upload reference images if provided
+            for (File refFile : selectedReferenceImageFiles) {
+                if (!imageService.uploadImage(createdHotel.getHotelId(), refFile, "REFERENCE")) {
+                    System.err.println("Warning: Failed to upload reference image: " + refFile.getName());
+                }
+            }
 
             // Show success message
             showSuccess();
@@ -178,6 +224,14 @@ public class HotelAndAdminRegistrationController implements Initializable {
             return "Hotel Type is required";
         }
 
+        // ─── Image Validation ───
+        if (selectedMainImageFile == null || !selectedMainImageFile.exists()) {
+            return "Main hotel photo is required";
+        }
+        if (!HotelImageService.isValidImageFile(selectedMainImageFile)) {
+            return "Main photo must be a valid image file (JPG, PNG, GIF, BMP)";
+        }
+
         return null; // No errors
     }
 
@@ -253,6 +307,84 @@ public class HotelAndAdminRegistrationController implements Initializable {
         } catch (IOException e) {
             showError("Error navigating to login: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handle Choose Main Image button
+     */
+    @FXML
+    private void onChooseMainImageClick() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Main Hotel Photo");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp"),
+            new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        
+        File selectedFile = fileChooser.showOpenDialog(chooseMainImageButton.getScene().getWindow());
+        if (selectedFile != null) {
+            if (HotelImageService.isValidImageFile(selectedFile)) {
+                selectedMainImageFile = selectedFile;
+                mainImageLabel.setText(selectedFile.getName());
+                mainImageLabel.setStyle("-fx-text-fill: #27ae60;");
+            } else {
+                showError("Invalid image format. Please select JPG, PNG, GIF, or BMP.");
+                mainImageLabel.setText("No valid file selected");
+            }
+        }
+    }
+
+    /**
+     * Handle Choose Reference Images button
+     */
+    @FXML
+    private void onChooseReferenceImagesClick() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Reference Photos (up to 5)");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp"),
+            new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(chooseReferenceImagesButton.getScene().getWindow());
+        if (selectedFiles != null) {
+            // Limit to 5 files
+            if (selectedFiles.size() > 5) {
+                showError("Please select no more than 5 reference photos. Selected " + selectedFiles.size());
+                return;
+            }
+            
+            // Validate all files
+            List<File> validFiles = new ArrayList<>();
+            for (File file : selectedFiles) {
+                if (HotelImageService.isValidImageFile(file)) {
+                    validFiles.add(file);
+                } else {
+                    System.err.println("Skipping invalid image: " + file.getName());
+                }
+            }
+            
+            selectedReferenceImageFiles = validFiles;
+            updateReferenceImagesDisplay();
+        }
+    }
+
+    /**
+     * Update reference images display
+     */
+    private void updateReferenceImagesDisplay() {
+        referenceImagesLabel.setText(selectedReferenceImageFiles.size() + "/5 photos selected");
+        if (selectedReferenceImageFiles.size() > 0) {
+            referenceImagesLabel.setStyle("-fx-text-fill: #27ae60;");
+        }
+        
+        // Display selected filenames
+        selectedFilesContainer.getChildren().clear();
+        for (File file : selectedReferenceImageFiles) {
+            Label fileLabel = new Label("• " + file.getName());
+            fileLabel.setStyle("-fx-text-fill: #27ae60;");
+            selectedFilesContainer.getChildren().add(fileLabel);
         }
     }
 }

@@ -59,3 +59,17 @@ CREATE TABLE IF NOT EXISTS rooms (
     UNIQUE KEY (hotel_id, room_number),
     FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE
 );
+
+-- ── Hotel Images ─────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS hotel_images (
+    image_id    INT           NOT NULL AUTO_INCREMENT,
+    hotel_id    INT           NOT NULL,
+    image_path  VARCHAR(255)  NOT NULL,
+    image_type  VARCHAR(20)   NOT NULL,              -- 'MAIN' or 'REFERENCE'
+    is_primary  BOOLEAN       DEFAULT FALSE,
+    uploaded_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (image_id),
+    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE,
+    INDEX idx_hotel (hotel_id),
+    INDEX idx_type (image_type)
+);

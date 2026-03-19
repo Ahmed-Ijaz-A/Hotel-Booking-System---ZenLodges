@@ -101,6 +101,34 @@
                         <TextArea fx:id="descriptionArea" promptText="Describe your hotel, amenities, etc." 
                                  wrapText="true" prefRowCount="6" style="-fx-padding: 8; -fx-control-inner-background: white;"/>
                     </VBox>
+
+                    <!-- Main Image Upload -->
+                    <VBox spacing="5">
+                        <Label text="Main Hotel Photo * (Required)" style="-fx-font-weight: bold;"/>
+                        <Label text="This will be displayed on the home page and search results"
+                               style="-fx-text-fill: #7f8c8d; -fx-font-size: 10;"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Button fx:id="chooseMainImageButton" text="Choose Main Photo" 
+                                   onAction="#onChooseMainImageClick" 
+                                   style="-fx-padding: 8 16; -fx-font-size: 11;"/>
+                            <Label fx:id="mainImageLabel" text="No file selected" 
+                                  style="-fx-text-fill: #95a5a6;"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Reference Images Upload -->
+                    <VBox spacing="5">
+                        <Label text="Additional Reference Photos (Optional - 0 to 5 photos)"
+                               style="-fx-font-weight: bold;"/>
+                        <Label text="These will be shown in your hotel gallery"
+                               style="-fx-text-fill: #7f8c8d; -fx-font-size: 10;"/>
+                        <Button fx:id="chooseReferenceImagesButton" text="Choose Reference Photos" 
+                               onAction="#onChooseReferenceImagesClick" 
+                               style="-fx-padding: 8 16; -fx-font-size: 11;"/>
+                        <Label fx:id="referenceImagesLabel" text="No files selected (0/5)" 
+                              style="-fx-text-fill: #95a5a6;"/>
+                        <VBox fx:id="selectedFilesContainer" spacing="3"/>
+                    </VBox>
                 </VBox>
 
                 <Separator/>
