@@ -61,6 +61,7 @@
                     <!-- CTA Buttons -->
                     <HBox spacing="20" style="-fx-alignment: center;">
                         <Button fx:id="searchHotelsBtn" text="Search Hotels" styleClass="btn-primary" onAction="#onSearchHotelsClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
+                        <Button text="Register Your Hotel" styleClass="btn-primary" onAction="#onRegisterHotelClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
                         <Button fx:id="loginBtn" text="Login" styleClass="btn-primary" onAction="#onLoginClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
                     </HBox>
 

@@ -49,7 +49,43 @@ public class UserDAO {
     // ── Register ───────────────────────────────────────────
 
     /**
-     * Inserts a new user row.
+     * Inserts a new user row and returns the created user with auto-generated ID.
+     *
+     * @return the created {@link User} with ID populated, or {@code null} if insertion failed.
+     */
+    public User registerUserWithId(User user) {
+        String sql = "INSERT INTO users (name, email, password, role, status) VALUES (?, ?, ?, ?, ?)";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+                ps.setString(1, user.getName());
+                ps.setString(2, user.getEmail());
+                ps.setString(3, user.getPassword());
+                ps.setString(4, user.getRole());
+                ps.setString(5, user.getStatus());
+
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            int userId = generatedKeys.getInt(1);
+                            user.setUserId(userId);
+                            return user;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error registering user: " + e.getMessage());
+            throw new RuntimeException("Database error while registering user.", e);
+        }
+        return null;
+    }
+
+    /**
+     * Inserts a new user row (legacy method).
      *
      * @return {@code true} if the row was inserted, {@code false} otherwise.
      */

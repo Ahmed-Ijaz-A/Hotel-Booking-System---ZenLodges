@@ -30,6 +30,12 @@
 
             <Label text="Admin Panel" styleClass="sidebar-subtitle"/>
 
+            <!-- Hotel Status Display -->
+            <Label fx:id="hotelStatusLabel" text="Loading hotel..." 
+                   styleClass="hotel-status-label" 
+                   wrapText="true"
+                   style="-fx-font-size: 11; -fx-text-alignment: center;"/>
+
             <!-- Nav buttons -->
             <Button text="Add Room" onAction="#handleAddRoom"
                     styleClass="sidebar-btn" maxWidth="170" prefHeight="36"/>

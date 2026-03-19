@@ -1,25 +1,26 @@
 package com.xcoders.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import com.xcoders.SessionManager;
+import com.xcoders.model.Hotel;
+import com.xcoders.model.User;
+import com.xcoders.service.HotelService;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-
-import com.xcoders.model.Hotel;
-import com.xcoders.model.User;
-import com.xcoders.service.HotelService;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Controller for PlatformAdminDashboard.fxml
@@ -107,9 +108,14 @@ public class PlatformAdminDashboardController implements Initializable {
             return;
         }
 
-        // TODO: Get current user ID from session/context
-        int platformAdminId = 1; // Placeholder - should come from logged-in user
+        // Get current user ID from session
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            showAlert(AlertType.ERROR, "Error", "Session expired. Please login again.");
+            return;
+        }
 
+        int platformAdminId = currentUser.getUserId();
         boolean success = hotelService.approveHotel(selectedHotel.getHotelId(), platformAdminId);
         if (success) {
             showAlert(AlertType.INFORMATION, "Success", "Hotel '" + selectedHotel.getName() + "' has been approved!");
@@ -130,9 +136,14 @@ public class PlatformAdminDashboardController implements Initializable {
             return;
         }
 
-        // TODO: Get current user ID from session/context
-        int platformAdminId = 1; // Placeholder - should come from logged-in user
+        // Get current user ID from session
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            showAlert(AlertType.ERROR, "Error", "Session expired. Please login again.");
+            return;
+        }
 
+        int platformAdminId = currentUser.getUserId();
         boolean success = hotelService.rejectHotel(selectedHotel.getHotelId(), platformAdminId);
         if (success) {
             showAlert(AlertType.INFORMATION, "Success", "Hotel '" + selectedHotel.getName() + "' has been rejected.");
@@ -148,6 +159,7 @@ public class PlatformAdminDashboardController implements Initializable {
     @FXML
     private void onLogoutClick() {
         try {
+        SessionManager.getInstance().clearSession();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
             Stage stage = (Stage) hotelsTable.getScene().getWindow();
             Scene scene = new Scene(root);

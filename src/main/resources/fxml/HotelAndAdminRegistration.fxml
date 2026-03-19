@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.xcoders.controller.HotelAndAdminRegistrationController"
+            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12;">
+
+    <!-- Top: Navigation Bar -->
+    <top>
+        <HBox spacing="20" style="-fx-background-color: #f5f5f5; -fx-padding: 15;" alignment="CENTER_LEFT">
+            <Label text="ZenLodges" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Back to Home" onAction="#onBackClick" style="-fx-padding: 8 16; -fx-font-size: 11;"/>
+        </HBox>
+    </top>
+
+    <!-- Center: Registration Form -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-padding: 0;">
+            <VBox spacing="20" style="-fx-padding: 30;">
+                <!-- Title -->
+                <VBox spacing="5">
+                    <Label text="Register Your Hotel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                    <Label text="Complete both sections below. Your hotel will be pending approval from our platform administrator."
+                           style="-fx-text-fill: #7f8c8d; -fx-font-size: 11; -fx-wrap-text: true;"/>
+                </VBox>
+
+                <Separator/>
+
+                <!-- ADMIN DETAILS SECTION -->
+                <VBox spacing="15">
+                    <Label text="Your Details (Hotel Admin)" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+                    
+                    <!-- Full Name -->
+                    <VBox spacing="5">
+                        <Label text="Full Name *" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="adminNameField" promptText="Your full name" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Email -->
+                    <VBox spacing="5">
+                        <Label text="Email Address *" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="adminEmailField" promptText="yourname@example.com" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Phone -->
+                    <VBox spacing="5">
+                        <Label text="Phone Number" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="adminPhoneField" promptText="+1-800-XXX-XXXX" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Username -->
+                    <VBox spacing="5">
+                        <Label text="Username *" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="usernameField" promptText="Choose a username" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Password -->
+                    <VBox spacing="5">
+                        <Label text="Password *" style="-fx-font-weight: bold;"/>
+                        <PasswordField fx:id="passwordField" promptText="Min 6 characters" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Confirm Password -->
+                    <VBox spacing="5">
+                        <Label text="Confirm Password *" style="-fx-font-weight: bold;"/>
+                        <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" style="-fx-padding: 8;"/>
+                    </VBox>
+                </VBox>
+
+                <Separator/>
+
+                <!-- HOTEL DETAILS SECTION -->
+                <VBox spacing="15">
+                    <Label text="Hotel Details" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+                    
+                    <!-- Hotel Name -->
+                    <VBox spacing="5">
+                        <Label text="Hotel Name *" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="hotelNameField" promptText="Enter hotel name" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Location -->
+                    <VBox spacing="5">
+                        <Label text="Location/Address *" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="locationField" promptText="City or full address" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Hotel Type -->
+                    <VBox spacing="5">
+                        <Label text="Hotel Type *" style="-fx-font-weight: bold;"/>
+                        <ComboBox fx:id="hotelTypeCombo" prefWidth="Infinity" style="-fx-padding: 8;"/>
+                    </VBox>
+
+                    <!-- Description -->
+                    <VBox spacing="5">
+                        <Label text="Description" style="-fx-font-weight: bold;"/>
+                        <TextArea fx:id="descriptionArea" promptText="Describe your hotel, amenities, etc." 
+                                 wrapText="true" prefRowCount="6" style="-fx-padding: 8; -fx-control-inner-background: white;"/>
+                    </VBox>
+                </VBox>
+
+                <Separator/>
+
+                <!-- Error/Status Message -->
+                <Label fx:id="statusLabel" text="" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;"/>
+
+                <!-- Buttons -->
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="Cancel" onAction="#onCancelClick" 
+                           style="-fx-padding: 10 30; -fx-font-size: 12;" />
+                    <Button text="Register Hotel &amp; Account" onAction="#onSubmitClick"
+                           style="-fx-padding: 10 30; -fx-font-size: 12; -fx-font-weight: bold; -fx-base: #3498db; -fx-text-fill: white;"/>
+                </HBox>
+
+                <!-- Success Message -->
+                <VBox fx:id="successBox" spacing="10" style="-fx-border-color: #27ae60; -fx-border-width: 1; -fx-padding: 15; -fx-border-radius: 5; -fx-background-color: #f0fdf4;" visible="false">
+                    <Label text="✓ Registration Successful!" 
+                          style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
+                    <VBox spacing="5">
+                        <Label text="Your account has been created and your hotel has been submitted for approval."
+                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
+                        <Label text="Next Steps:"
+                              style="-fx-text-fill: #27ae60; -fx-font-weight: bold;"/>
+                        <Label text="1. Log in with your credentials"
+                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
+                        <Label text="2. Check Admin Dashboard for approval status"
+                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
+                        <Label text="3. Once approved, you can begin adding rooms"
+                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
+                    </VBox>
+                    <Button text="Go to Login" onAction="#onGoToLoginClick"
+                           style="-fx-padding: 8 20; -fx-font-size: 11;"/>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

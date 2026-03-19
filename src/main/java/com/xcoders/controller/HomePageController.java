@@ -55,6 +55,12 @@ public class HomePageController implements Initializable {
         navigateToLogin();
     }
 
+    @FXML
+    private void onRegisterHotelClick() {
+        System.out.println("Register Hotel button clicked");
+        navigateToHotelAndAdminRegistration();
+    }
+
     private void navigateToLogin() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
@@ -66,6 +72,36 @@ public class HomePageController implements Initializable {
             stage.setScene(scene);
         } catch (IOException e) {
             System.err.println("Failed to load Login page: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void navigateToHotelRegistration() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/HotelRegistration.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+
+            Stage stage = (Stage) loginBtn.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.err.println("Failed to load Hotel Registration page: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void navigateToHotelAndAdminRegistration() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/HotelAndAdminRegistration.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+
+            Stage stage = (Stage) loginBtn.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.err.println("Failed to load Hotel and Admin Registration page: " + e.getMessage());
             e.printStackTrace();
         }
     }

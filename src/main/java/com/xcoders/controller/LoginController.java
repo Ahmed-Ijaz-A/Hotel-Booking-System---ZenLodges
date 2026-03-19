@@ -2,6 +2,7 @@ package com.xcoders.controller;
 
 import java.io.IOException;
 
+import com.xcoders.SessionManager;
 import com.xcoders.model.Role;
 import com.xcoders.model.User;
 import com.xcoders.service.UserService;
@@ -93,6 +94,9 @@ public class LoginController {
         }
 
         errorLabel.setText("");
+
+        // Store user in session
+        SessionManager.getInstance().setCurrentUser(user);
 
         // Route to appropriate dashboard based on role
         routeToDashboard(userActualRole, user);
