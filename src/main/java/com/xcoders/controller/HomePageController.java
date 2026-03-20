@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,8 +31,9 @@ import javafx.stage.Stage;
  */
 public class HomePageController implements Initializable {
 
-    // ── Navigation ──
-    @FXML private Button searchHotelsBtn;
+    // ── Header/Search ──
+    @FXML private ComboBox<String> searchComboBox;
+    @FXML private Button searchBtn;
     @FXML private Button loginBtn;
 
     // ── Hotel Display ──
@@ -40,6 +42,7 @@ public class HomePageController implements Initializable {
 
     private HotelService hotelService;
     private HotelImageService imageService;
+    private List<Hotel> allHotels; // Store all approved hotels for filtering
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,6 +51,55 @@ public class HomePageController implements Initializable {
 
         // Load and display approved hotels
         loadApprovedHotels();
+        
+        // Setup autocomplete listener
+        setupSearchAutocomplete();
+    }
+
+    /**
+     * Setup autocomplete for the search box
+     */
+    private void setupSearchAutocomplete() {
+        searchComboBox.setEditable(true);
+        searchComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+            updateSearchSuggestions(newVal);
+        });
+    }
+
+    /**
+     * Update search suggestions based on user input
+     */
+    private void updateSearchSuggestions(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            searchComboBox.getItems().clear();
+            return;
+        }
+
+        String lowerQuery = query.toLowerCase();
+        List<String> suggestions = new java.util.ArrayList<>();
+        
+        // Filter and collect suggestions
+        for (Hotel hotel : allHotels) {
+            String hotelName = hotel.getName();
+            String hotelLocation = hotel.getLocation();
+            
+            if (hotelName.toLowerCase().contains(lowerQuery)) {
+                suggestions.add(hotelName + " - " + hotelLocation);
+            } else if (hotelLocation.toLowerCase().contains(lowerQuery)) {
+                suggestions.add(hotelName + " - " + hotelLocation);
+            }
+        }
+
+        // Update ComboBox items
+        searchComboBox.getItems().clear();
+        searchComboBox.getItems().addAll(suggestions);
+        
+        // Show dropdown if there are suggestions
+        if (!suggestions.isEmpty()) {
+            searchComboBox.show();
+        } else {
+            searchComboBox.hide();
+        }
     }
 
     /**
@@ -55,9 +107,9 @@ public class HomePageController implements Initializable {
      */
     private void loadApprovedHotels() {
         try {
-            List<Hotel> approvedHotels = hotelService.getApprovedHotels();
+            allHotels = hotelService.getApprovedHotels();
 
-            if (approvedHotels == null || approvedHotels.isEmpty()) {
+            if (allHotels == null || allHotels.isEmpty()) {
                 hotelGridPane.setVisible(false);
                 noHotelsLabel.setVisible(true);
                 return;
@@ -66,25 +118,44 @@ public class HomePageController implements Initializable {
             hotelGridPane.setVisible(true);
             noHotelsLabel.setVisible(false);
 
-            // Display hotels as cards (3 columns)
-            int row = 0;
-            int col = 0;
-            for (Hotel hotel : approvedHotels) {
-                VBox hotelCard = createHotelCard(hotel);
-                hotelGridPane.add(hotelCard, col, row);
-
-                col++;
-                if (col >= 3) {
-                    col = 0;
-                    row++;
-                }
-            }
+            displayHotels(allHotels);
 
         } catch (Exception e) {
             System.err.println("[HomePageController] Error loading hotels: " + e.getMessage());
             e.printStackTrace();
             noHotelsLabel.setText("Error loading hotels. Please try again later.");
             noHotelsLabel.setVisible(true);
+        }
+    }
+
+    /**
+     * Display hotels in the grid
+     */
+    private void displayHotels(List<Hotel> hotels) {
+        hotelGridPane.getChildren().clear();
+
+        if (hotels == null || hotels.isEmpty()) {
+            hotelGridPane.setVisible(false);
+            noHotelsLabel.setVisible(true);
+            noHotelsLabel.setText("No hotels found.");
+            return;
+        }
+
+        hotelGridPane.setVisible(true);
+        noHotelsLabel.setVisible(false);
+
+        // Display hotels as cards (3 columns)
+        int row = 0;
+        int col = 0;
+        for (Hotel hotel : hotels) {
+            VBox hotelCard = createHotelCard(hotel);
+            hotelGridPane.add(hotelCard, col, row);
+
+            col++;
+            if (col >= 3) {
+                col = 0;
+                row++;
+            }
         }
     }
 
@@ -169,27 +240,38 @@ public class HomePageController implements Initializable {
         return card;
     }
 
-    // ── Navigation Actions ──
+    // ── Search and Navigation ──
 
     @FXML
-    private void onHomeClick() {
-        System.out.println("Home clicked");
-    }
+    private void onSearchClick() {
+        String searchQuery = searchComboBox.getEditor().getText().trim();
+        
+        if (searchQuery.isEmpty()) {
+            return;
+        }
 
-    @FXML
-    private void onSearchHotelsClick() {
-        System.out.println("Search Hotels clicked");
-    }
+        // Extract hotel name from formatted suggestion (e.g., "Hotel Name - Location" -> "Hotel Name")
+        if (searchQuery.contains(" - ")) {
+            searchQuery = searchQuery.split(" - ")[0].trim();
+        }
 
-    @FXML
-    private void onContactClick() {
-        System.out.println("Contact clicked");
-    }
-
-    @FXML
-    private void onLoginRegisterClick() {
-        System.out.println("Login/Register clicked");
-        navigateToLogin();
+        try {
+            // Navigate to hotel details page
+            Stage stage = (Stage) searchBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/HotelDetails.fxml"));
+            Parent root = loader.load();
+            
+            // Get the controller and pass the search query
+            HotelDetailsController controller = loader.getController();
+            controller.loadHotelDetails(searchQuery);
+            
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.err.println("Failed to load Hotel Details page: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
