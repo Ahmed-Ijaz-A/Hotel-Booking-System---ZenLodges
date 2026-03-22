@@ -38,6 +38,9 @@
             <!-- Login Button -->
             <Button fx:id="loginBtn" text="Login" onAction="#onLoginClick" style="-fx-padding: 8 20; -fx-font-size: 12; -fx-cursor: hand;"/>
 
+            <!-- Browse Rooms Button (for logged-in users) -->
+            <Button fx:id="browseRoomsBtn" text="Browse Rooms" onAction="#onBrowseRoomsClick" style="-fx-padding: 8 20; -fx-font-size: 12; -fx-cursor: hand;" visible="false" managed="false"/>
+
         </HBox>
     </top>
 
@@ -61,6 +64,7 @@
 
                     <!-- CTA Buttons -->
                     <HBox spacing="20" style="-fx-alignment: center;">
+                        <Button fx:id="heroBrowseRoomsBtn" text="Browse Rooms" onAction="#onBrowseRoomsClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand; -fx-background-color: #003cfd; -fx-text-fill: white; -fx-font-weight: bold;"/>
                         <Button text="Register Your Hotel" styleClass="btn-primary" onAction="#onRegisterHotelClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
                     </HBox>
 

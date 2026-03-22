@@ -9,6 +9,7 @@ import com.xcoders.model.User;
 public class SessionManager {
     private static SessionManager instance;
     private User currentUser;
+    private String pendingPostLoginPath;
 
     private SessionManager() {
     }
@@ -43,6 +44,22 @@ public class SessionManager {
     }
 
     /**
+     * Store a target scene to be opened right after a successful login.
+     */
+    public void setPendingPostLoginPath(String fxmlPath) {
+        this.pendingPostLoginPath = fxmlPath;
+    }
+
+    /**
+     * Consume and clear the pending post-login target.
+     */
+    public String consumePendingPostLoginPath() {
+        String path = pendingPostLoginPath;
+        pendingPostLoginPath = null;
+        return path;
+    }
+
+    /**
      * Check if user is logged in
      */
     public boolean isLoggedIn() {
@@ -55,5 +72,6 @@ public class SessionManager {
     public void clearSession() {
         System.out.println("[SessionManager] User logged out: " + (currentUser != null ? currentUser.getName() : "none"));
         currentUser = null;
+        pendingPostLoginPath = null;
     }
 }

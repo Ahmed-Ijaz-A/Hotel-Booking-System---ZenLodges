@@ -105,21 +105,32 @@ public class User {
      * Check if user is a Platform Admin
      */
     public boolean isPlatformAdmin() {
-        return "PLATFORM_ADMIN".equals(role);
+        if (role == null) {
+            return false;
+        }
+        String normalizedRole = role.trim().toUpperCase();
+        return "PLATFORM_ADMIN".equals(normalizedRole) || "ADMIN".equals(normalizedRole);
     }
 
     /**
      * Check if user is a Hotel Admin
      */
     public boolean isHotelAdmin() {
-        return "HOTEL_ADMIN".equals(role);
+        if (role == null) {
+            return false;
+        }
+        return "HOTEL_ADMIN".equals(role.trim().toUpperCase());
     }
 
     /**
      * Check if user is a regular User
      */
     public boolean isUser() {
-        return "USER".equals(role);
+        if (role == null) {
+            return false;
+        }
+        String normalizedRole = role.trim().toUpperCase();
+        return "USER".equals(normalizedRole) || "GUEST".equals(normalizedRole);
     }
 
     /**

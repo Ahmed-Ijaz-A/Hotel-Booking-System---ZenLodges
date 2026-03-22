@@ -71,6 +71,7 @@
                         <PropertyValueFactory property="status"/>
                     </cellValueFactory>
                 </TableColumn>
+                <TableColumn fx:id="actionColumn" text="Action" prefWidth="100"/>
             </columns>
 
             <columnResizePolicy>

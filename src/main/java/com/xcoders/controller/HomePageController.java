@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.xcoders.SessionManager;
+import com.xcoders.model.User;
 import com.xcoders.model.Hotel;
 import com.xcoders.model.HotelImage;
 import com.xcoders.service.HotelImageService;
@@ -35,6 +37,8 @@ public class HomePageController implements Initializable {
     @FXML private ComboBox<String> searchComboBox;
     @FXML private Button searchBtn;
     @FXML private Button loginBtn;
+    @FXML private Button browseRoomsBtn;
+    @FXML private Button heroBrowseRoomsBtn;
 
     // ── Hotel Display ──
     @FXML private GridPane hotelGridPane;
@@ -54,6 +58,20 @@ public class HomePageController implements Initializable {
         
         // Setup autocomplete listener
         setupSearchAutocomplete();
+
+        // Show room browsing path to logged-in customers
+        updateHeaderActions();
+    }
+
+    private void updateHeaderActions() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        boolean isLoggedInUser = currentUser != null && currentUser.isUser();
+
+        loginBtn.setVisible(!isLoggedInUser);
+        loginBtn.setManaged(!isLoggedInUser);
+
+        browseRoomsBtn.setVisible(isLoggedInUser);
+        browseRoomsBtn.setManaged(isLoggedInUser);
     }
 
     /**
@@ -284,6 +302,29 @@ public class HomePageController implements Initializable {
     private void onRegisterHotelClick() {
         System.out.println("Register Hotel button clicked");
         navigateToHotelAndAdminRegistration();
+    }
+
+    @FXML
+    private void onBrowseRoomsClick() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null || !currentUser.isUser()) {
+            SessionManager.getInstance().setPendingPostLoginPath("/fxml/ViewRooms.fxml");
+            navigateToLogin();
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ViewRooms.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+
+            Stage stage = (Stage) browseRoomsBtn.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.err.println("Failed to load View Rooms page: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void navigateToLogin() {

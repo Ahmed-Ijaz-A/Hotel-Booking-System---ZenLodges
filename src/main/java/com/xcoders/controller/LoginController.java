@@ -108,6 +108,12 @@ public class LoginController {
     private void routeToDashboard(Role role, User user) {
         String fxmlPath;
 
+        String pendingPath = SessionManager.getInstance().consumePendingPostLoginPath();
+        if (pendingPath != null && role == Role.USER) {
+            loadScene(pendingPath);
+            return;
+        }
+
         switch (role) {
             case PLATFORM_ADMIN:
                 fxmlPath = "/fxml/PlatformAdminDashboard.fxml";

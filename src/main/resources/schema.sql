@@ -73,3 +73,21 @@ CREATE TABLE IF NOT EXISTS hotel_images (
     INDEX idx_hotel (hotel_id),
     INDEX idx_type (image_type)
 );
+
+-- ── Bookings ───────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS bookings (
+    booking_id   INT       NOT NULL AUTO_INCREMENT,
+    room_id      INT       NOT NULL,
+    user_id      INT       NOT NULL,
+    check_in     DATE      NOT NULL,
+    check_out    DATE      NOT NULL,
+    status       VARCHAR(20) NOT NULL DEFAULT 'CONFIRMED', -- 'CONFIRMED' | 'CANCELLED'
+    created_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (booking_id),
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    INDEX idx_room (room_id),
+    INDEX idx_user (user_id),
+    INDEX idx_dates (check_in, check_out),
+    INDEX idx_status (status)
+);
