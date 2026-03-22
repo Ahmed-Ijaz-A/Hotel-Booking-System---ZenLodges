@@ -58,6 +58,13 @@ public class HotelService {
     public List<Hotel> getApprovedHotels() {
         return hotelDAO.getApprovedHotels();
     }
+
+    /**
+     * Get all hotels regardless of status
+     */
+    public List<Hotel> getAllHotels() {
+        return hotelDAO.getAllHotels();
+    }
     /**
      * Get hotels by specific status (PENDING, APPROVED, REJECTED)
      */
@@ -90,7 +97,7 @@ public class HotelService {
     public Hotel getHotelById(int hotelId) {
         return hotelDAO.getHotelById(hotelId);
     }
-
+    
     /**
      * Approve a hotel (platform admin action)
      *

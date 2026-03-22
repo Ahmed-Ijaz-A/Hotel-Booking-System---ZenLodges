@@ -1,5 +1,9 @@
 package com.xcoders.controller;
 
+import com.xcoders.SessionManager;
+import com.xcoders.model.Hotel;
+import com.xcoders.model.User;
+import com.xcoders.service.HotelService;
 import com.xcoders.service.RoomService;
 
 import javafx.fxml.FXML;
@@ -7,6 +11,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
+import java.util.List;
 
 /**
  * Controller for AddRoom.fxml.
@@ -20,9 +26,49 @@ public class AddRoomController {
     @FXML private Label messageLabel;
 
     private final RoomService roomService = new RoomService();
+    private int hotelId = -1;
+    private boolean canManageRooms = false;
+
+    @FXML
+    private void initialize() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            showMessage("You must be logged in to add rooms.", true);
+            return;
+        }
+
+        HotelService hotelService = new HotelService();
+        List<Hotel> hotels = hotelService.getHotelsByAdminId(currentUser.getUserId());
+        if (hotels.isEmpty()) {
+            showMessage("No hotel found for your account. Register a hotel first.", true);
+            return;
+        }
+
+        Hotel selectedHotel = hotels.stream()
+                .filter(Hotel::isApproved)
+                .findFirst()
+                .orElse(hotels.get(0));
+
+        hotelId = selectedHotel.getHotelId();
+        canManageRooms = selectedHotel.isApproved();
+
+        if (!canManageRooms) {
+            showMessage("Your hotel is not approved yet. You can add rooms after approval.", true);
+        }
+    }
 
     @FXML
     private void handleAddRoom() {
+        if (!canManageRooms) {
+            showMessage("Your hotel is not approved yet. You can add rooms after approval.", true);
+            return;
+        }
+
+        if (hotelId <= 0) {
+            showMessage("No hotel found for your account.", true);
+            return;
+        }
+
         String roomNumber = roomNumberField.getText().trim();
         String type       = typeCombo.getValue();
         String priceText  = priceField.getText().trim();
@@ -48,14 +94,14 @@ public class AddRoomController {
         }
 
         // Attempt to add room
-        boolean success = roomService.addRoom(roomNumber, type, price, status);
+        boolean success = roomService.addRoom(hotelId, roomNumber, type, price, status);
 
         if (success) {
             showAlert(Alert.AlertType.INFORMATION, "Success", "Room added successfully!");
             clearFields();
             showMessage("Room added successfully!", false);
         } else {
-            showMessage("Room number already exists or could not save.", true);
+            showMessage("Room number already exists in this hotel or could not save.", true);
         }
     }
 

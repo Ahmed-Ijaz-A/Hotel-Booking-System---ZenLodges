@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 public class Room {
 
     private int roomId;
+    private int hotelId;
     private String roomNumber;
     private String type;       // e.g. "Single", "Double", "Deluxe", "Suite"
     private double price;
@@ -19,9 +20,10 @@ public class Room {
     public Room() { }
 
     // ── Full constructor (including generated fields) ───────
-    public Room(int roomId, String roomNumber, String type,
+    public Room(int roomId, int hotelId, String roomNumber, String type,
                 double price, String status, Timestamp createdAt) {
         this.roomId     = roomId;
+        this.hotelId    = hotelId;
         this.roomNumber = roomNumber;
         this.type       = type;
         this.price      = price;
@@ -30,7 +32,8 @@ public class Room {
     }
 
     // ── Constructor for creating a new room (no id / timestamp) ─
-    public Room(String roomNumber, String type, double price, String status) {
+    public Room(int hotelId, String roomNumber, String type, double price, String status) {
+        this.hotelId    = hotelId;
         this.roomNumber = roomNumber;
         this.type       = type;
         this.price      = price;
@@ -38,6 +41,9 @@ public class Room {
     }
 
     // ── Getters & Setters ──────────────────────────────────
+
+    public int getHotelId() { return hotelId; }
+    public void setHotelId(int hotelId) { this.hotelId = hotelId; }
 
     public int getRoomId() {
         return roomId;

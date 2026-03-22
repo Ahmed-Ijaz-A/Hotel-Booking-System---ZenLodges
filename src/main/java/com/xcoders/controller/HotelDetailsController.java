@@ -35,7 +35,6 @@ public class HotelDetailsController implements Initializable {
 
     private HotelService hotelService;
     private HotelImageService imageService;
-    private String searchQuery; // The search term used to find the hotel
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -47,8 +46,6 @@ public class HotelDetailsController implements Initializable {
      * Load and display hotel details based on search query
      */
     public void loadHotelDetails(String query) {
-        this.searchQuery = query;
-        
         if (query == null || query.trim().isEmpty()) {
             showNoHotelFound();
             return;

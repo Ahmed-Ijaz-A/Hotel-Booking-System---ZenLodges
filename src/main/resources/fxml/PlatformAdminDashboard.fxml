@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -27,6 +28,7 @@
             <Button text="Pending Hotels" onAction="#onPendingClick" styleClass="sidebar-btn" maxWidth="Infinity"/>
             <Button text="Approved Hotels" onAction="#onApprovedClick" styleClass="sidebar-btn" maxWidth="Infinity"/>
             <Button text="Rejected Hotels" onAction="#onRejectedClick" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="All Rooms" onAction="#onAllRoomsClick" styleClass="sidebar-btn" maxWidth="Infinity"/>
             
             <VBox style="-fx-padding: 20 0 0 0;"/>
             
@@ -44,6 +46,16 @@
             <!-- Title -->
             <Label fx:id="titleLabel" text="Pending Hotel Registrations" 
                    style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;"/>
+
+            <!-- Rooms Search (platform-admin room view only) -->
+            <HBox fx:id="roomSearchBox" spacing="8" visible="false" managed="false">
+                <TextField fx:id="roomSearchField"
+                           promptText="Search by Room ID, Hotel ID, or Hotel Name"
+                           onAction="#onRoomSearch"
+                           prefWidth="420"/>
+                <Button text="Search" onAction="#onRoomSearch"/>
+                <Button text="Clear" onAction="#onClearRoomSearch"/>
+            </HBox>
             
             <!-- Hotels Table -->
             <TableView fx:id="hotelsTable" style="-fx-font-size: 13;">
@@ -65,6 +77,31 @@
                     </TableColumn>
                     <TableColumn text="Actions" prefWidth="120">
                         <cellValueFactory><PropertyValueFactory property="hotelId"/></cellValueFactory>
+                    </TableColumn>
+                </columns>
+            </TableView>
+
+            <!-- Rooms Table (platform-admin all rooms view) -->
+            <TableView fx:id="roomsTable" style="-fx-font-size: 13;" visible="false" managed="false">
+                <columns>
+                    <TableColumn fx:id="roomIdColumn" text="Room ID" prefWidth="80">
+                        <cellValueFactory><PropertyValueFactory property="roomId"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="roomHotelIdColumn" text="Hotel ID" prefWidth="80">
+                        <cellValueFactory><PropertyValueFactory property="hotelId"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="roomHotelNameColumn" text="Hotel Name" prefWidth="170"/>
+                    <TableColumn fx:id="roomNumberColumn" text="Room Number" prefWidth="120">
+                        <cellValueFactory><PropertyValueFactory property="roomNumber"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="roomTypeColumn" text="Type" prefWidth="110">
+                        <cellValueFactory><PropertyValueFactory property="type"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="roomPriceColumn" text="Price" prefWidth="110">
+                        <cellValueFactory><PropertyValueFactory property="price"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="roomStatusColumn" text="Status" prefWidth="120">
+                        <cellValueFactory><PropertyValueFactory property="status"/></cellValueFactory>
                     </TableColumn>
                 </columns>
             </TableView>

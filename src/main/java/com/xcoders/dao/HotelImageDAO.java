@@ -2,6 +2,7 @@ package com.xcoders.dao;
 
 import com.xcoders.DBConnection;
 import com.xcoders.model.HotelImage;
+import com.xcoders.util.DataSqlExporter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +31,11 @@ public class HotelImageDAO {
                 ps.setString(3, image.getImageType());
                 ps.setBoolean(4, image.isPrimary());
 
-                return ps.executeUpdate() > 0;
+                boolean success = ps.executeUpdate() > 0;
+                if (success) {
+                    DataSqlExporter.exportSnapshot();
+                }
+                return success;
             }
         } catch (SQLException e) {
             System.err.println("Error adding hotel image: " + e.getMessage());
@@ -122,7 +127,11 @@ public class HotelImageDAO {
             Connection conn = DBConnection.getConnection();
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setInt(1, imageId);
-                return ps.executeUpdate() > 0;
+                boolean success = ps.executeUpdate() > 0;
+                if (success) {
+                    DataSqlExporter.exportSnapshot();
+                }
+                return success;
             }
         } catch (SQLException e) {
             System.err.println("Error deleting image: " + e.getMessage());

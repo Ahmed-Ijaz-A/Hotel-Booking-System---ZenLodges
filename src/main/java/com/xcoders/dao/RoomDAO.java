@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.xcoders.DBConnection;
 import com.xcoders.model.Room;
+import com.xcoders.util.DataSqlExporter;
 
 /**
  * Data-Access Object for the {@code rooms} table.
@@ -24,18 +25,22 @@ public class RoomDAO {
      * @return {@code true} if the row was inserted, {@code false} otherwise.
      */
     public boolean addRoom(Room room) {
-        String sql = "INSERT INTO rooms (room_number, type, price, status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO rooms (hotel_id, room_number, type, price, status) VALUES (?, ?, ?, ?, ?)";
 
         try {
             Connection conn = DBConnection.getConnection();
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, room.getHotelId()); 
+                ps.setString(2, room.getRoomNumber());
+                ps.setString(3, room.getType());
+                ps.setDouble(4, room.getPrice());
+                ps.setString(5, room.getStatus());
 
-                ps.setString(1, room.getRoomNumber());
-                ps.setString(2, room.getType());
-                ps.setDouble(3, room.getPrice());
-                ps.setString(4, room.getStatus());
-
-                return ps.executeUpdate() > 0;
+                boolean success = ps.executeUpdate() > 0;
+                if (success) {
+                    DataSqlExporter.exportSnapshot();
+                }
+                return success;
             }
         } catch (SQLException e) {
             System.err.println("Error adding room: " + e.getMessage());
@@ -71,6 +76,21 @@ public class RoomDAO {
         return rooms;
     }
 
+    public List<Room> getRoomsByHotelId(int hotelId) {
+        String sql = "SELECT * FROM rooms WHERE hotel_id = ? ORDER BY room_id";
+        List<Room> rooms = new ArrayList<>();
+        try {
+            Connection conn = DBConnection.getConnection();
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, hotelId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) { rooms.add(extractRoom(rs)); }
+                }
+            }
+        }    
+        catch (SQLException e) { System.err.println("Error fetching rooms by hotel: " + e.getMessage()); }
+        return rooms;
+    }
     // ── Room-number-exists check ───────────────────────────
 
     /**
@@ -78,14 +98,15 @@ public class RoomDAO {
      *
      * @return {@code true} if the room number exists in the database.
      */
-    public boolean roomNumberExists(String roomNumber) {
-        String sql = "SELECT 1 FROM rooms WHERE room_number = ?";
+    public boolean roomNumberExists(String roomNumber, int hotelId) {
+        String sql = "SELECT 1 FROM rooms WHERE room_number = ? AND hotel_id = ?";
 
         try {
             Connection conn = DBConnection.getConnection();
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
                 ps.setString(1, roomNumber);
+                ps.setInt(2, hotelId);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     return rs.next();
@@ -107,6 +128,7 @@ public class RoomDAO {
     private Room extractRoom(ResultSet rs) throws SQLException {
         return new Room(
                 rs.getInt("room_id"),
+                rs.getInt("hotel_id"),
                 rs.getString("room_number"),
                 rs.getString("type"),
                 rs.getDouble("price"),

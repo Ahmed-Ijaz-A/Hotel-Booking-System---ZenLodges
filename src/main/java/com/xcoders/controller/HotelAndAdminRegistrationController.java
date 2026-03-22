@@ -120,16 +120,17 @@ public class HotelAndAdminRegistrationController implements Initializable {
             hotel.setHotelAdminId(createdUser.getUserId());
             // Status defaults to PENDING
 
-            hotelService.registerHotel(hotel);
-            
-            // Get the created hotel ID (we need to fetch it back)
-            List<Hotel> hotels = hotelService.getHotelsByAdminId(createdUser.getUserId());
-            if (hotels.isEmpty()) {
-                showError("Hotel was created but could not be found. Please try again.");
+            int createdHotelId = hotelService.registerHotel(hotel);
+            if (createdHotelId <= 0) {
+                showError("Failed to create hotel record. Please try again.");
                 return;
             }
-            
-            Hotel createdHotel = hotels.get(0);
+
+            Hotel createdHotel = hotelService.getHotelById(createdHotelId);
+            if (createdHotel == null) {
+                showError("Hotel record could not be loaded after creation. Please try again.");
+                return;
+            }
 
             // Step 3: Upload hotel images
             if (!imageService.uploadImage(createdHotel.getHotelId(), selectedMainImageFile, "MAIN")) {

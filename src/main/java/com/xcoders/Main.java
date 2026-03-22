@@ -6,10 +6,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import com.xcoders.util.DataSqlExporter;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        DataSqlExporter.exportSnapshot();
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Home.fxml"));
         Scene scene = new Scene(root);

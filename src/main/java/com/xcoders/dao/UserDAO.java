@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.xcoders.DBConnection;
 import com.xcoders.model.User;
+import com.xcoders.util.DataSqlExporter;
 
 /**
  * Data-Access Object for the {@code users} table.
@@ -72,6 +73,7 @@ public class UserDAO {
                         if (generatedKeys.next()) {
                             int userId = generatedKeys.getInt(1);
                             user.setUserId(userId);
+                            DataSqlExporter.exportSnapshot();
                             return user;
                         }
                     }
@@ -102,7 +104,11 @@ public class UserDAO {
                 ps.setString(4, user.getRole());
                 ps.setString(5, user.getStatus());
 
-                return ps.executeUpdate() > 0;
+                boolean success = ps.executeUpdate() > 0;
+                if (success) {
+                    DataSqlExporter.exportSnapshot();
+                }
+                return success;
             }
         } catch (SQLException e) {
             System.err.println("Error registering user: " + e.getMessage());

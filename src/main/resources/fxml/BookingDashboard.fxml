@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.xcoders.controller.ViewRoomsController"
+      fx:controller="com.xcoders.controller.BookingDashboardController"
       alignment="TOP_CENTER" spacing="20"
       styleClass="content-area">
 
@@ -20,9 +20,17 @@
         <Insets top="30" right="30" bottom="30" left="30"/>
     </padding>
 
-    <!-- Heading -->
-    <Label text="All Rooms" styleClass="title-label">
-        <font><Font size="22"/></font>
+    <!-- Header with title and back button -->
+    <HBox spacing="15" style="-fx-alignment: center_left;">
+        <Label fx:id="welcomeLabel" text="Welcome!" styleClass="title-label">
+            <font><Font size="22"/></font>
+        </Label>
+        <javafx.scene.layout.Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="backBtn" text="Back to Home" onAction="#onBackClick" style="-fx-padding: 8 20; -fx-font-size: 12; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- Subtitle -->
+    <Label text="Your Booking History" style="-fx-text-fill: #666666; -fx-font-size: 14;">
     </Label>
 
     <!-- Table card -->
@@ -32,45 +40,40 @@
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
 
-        <TableView fx:id="roomsTable" VBox.vgrow="ALWAYS"
+        <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS"
                    styleClass="table-view">
 
             <columns>
-                <TableColumn fx:id="hotelColumn" text="Hotel ID" prefWidth="100">
+                <TableColumn fx:id="hotelColumn" text="Hotel Name" prefWidth="150">
                     <cellValueFactory>
-                        <PropertyValueFactory property="hotelId"/>
+                        <PropertyValueFactory property="hotelName"/>
                     </cellValueFactory>
                 </TableColumn>
 
-                <TableColumn text="Room ID" prefWidth="80">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="roomId"/>
-                    </cellValueFactory>
-                </TableColumn>
-
-                <TableColumn text="Room Number" prefWidth="120">
+                <TableColumn fx:id="roomColumn" text="Room Number" prefWidth="120">
                     <cellValueFactory>
                         <PropertyValueFactory property="roomNumber"/>
                     </cellValueFactory>
                 </TableColumn>
 
-                <TableColumn text="Type" prefWidth="120">
+                <TableColumn fx:id="typeColumn" text="Room Type" prefWidth="120">
                     <cellValueFactory>
-                        <PropertyValueFactory property="type"/>
+                        <PropertyValueFactory property="roomType"/>
                     </cellValueFactory>
                 </TableColumn>
 
-                <TableColumn text="Price" prefWidth="120">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="price"/>
-                    </cellValueFactory>
+                <TableColumn fx:id="checkInColumn" text="Check-In" prefWidth="120">
                 </TableColumn>
 
-                <TableColumn text="Status" prefWidth="140">
+                <TableColumn fx:id="checkOutColumn" text="Check-Out" prefWidth="120">
+                </TableColumn>
+
+                <TableColumn fx:id="statusColumn" text="Status" prefWidth="120">
                     <cellValueFactory>
                         <PropertyValueFactory property="status"/>
                     </cellValueFactory>
                 </TableColumn>
+
                 <TableColumn fx:id="actionColumn" text="Action" prefWidth="100"/>
             </columns>
 
