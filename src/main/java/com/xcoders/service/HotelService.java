@@ -97,7 +97,7 @@ public class HotelService {
     public Hotel getHotelById(int hotelId) {
         return hotelDAO.getHotelById(hotelId);
     }
-
+    
     /**
      * Approve a hotel (platform admin action)
      *

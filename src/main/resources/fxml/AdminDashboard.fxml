@@ -44,6 +44,10 @@
                     styleClass="sidebar-btn" maxWidth="170" prefHeight="36"/>
 
             <!-- Spacer pushes Logout to the bottom -->
+                <Button text="Manage Bookings" onAction="#handleManageBookings"
+                    styleClass="sidebar-btn" maxWidth="170" prefHeight="36"/>
+
+                <!-- Spacer pushes Logout to the bottom -->
             <VBox VBox.vgrow="ALWAYS"/>
 
             <Button text="Logout" onAction="#handleLogout"

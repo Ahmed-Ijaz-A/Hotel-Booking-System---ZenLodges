@@ -65,8 +65,12 @@ public class RoomBookingController {
         });
 
         // Listen for date changes to check availability
-        checkInDatePicker.setOnAction(event -> checkAvailability());
-        checkOutDatePicker.setOnAction(event -> checkAvailability());
+        checkInDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) checkAvailability();
+        });
+        checkOutDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) checkAvailability();
+        });
 
         // Disable booking button initially
         bookButton.setDisable(true);
@@ -107,6 +111,9 @@ public class RoomBookingController {
      */
     @FXML
     private void checkAvailability() {
+
+        if (selectedRoom == null) return; 
+
         LocalDate checkInLocal = checkInDatePicker.getValue();
         LocalDate checkOutLocal = checkOutDatePicker.getValue();
 

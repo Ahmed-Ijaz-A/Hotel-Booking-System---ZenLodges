@@ -20,7 +20,7 @@
         <Label fx:id="roomDetailsLabel" text="No room selected" style="-fx-text-fill: #666;" />
         <HBox spacing="10">
             <Label text="Price per Night:" style="-fx-font-weight: bold;" />
-            <Label fx:id="priceLabel" text="$0.00" style="-fx-text-fill: #2196f3;" />
+            <Label fx:id="priceLabel" text="0.00" style="-fx-text-fill: #2196f3;" />
         </HBox>
     </VBox>
 

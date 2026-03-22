@@ -2,6 +2,7 @@ package com.xcoders.service;
 
 import com.xcoders.dao.BookingDAO;
 import com.xcoders.model.Booking;
+import com.xcoders.model.BookingDetail;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -141,4 +142,35 @@ public class BookingService {
             return false;
         }
     }
+
+    /**
+     * Retrieves booking details for a user with associated hotel and room information.
+     *
+     * @param userId the user ID
+     * @return a list of BookingDetail objects
+     */
+    public List<BookingDetail> getUserBookingDetails(int userId) {
+        try {
+            return bookingDAO.getBookingDetailsForUser(userId);
+        } catch (SQLException e) {
+            System.err.println("[BookingService] Error retrieving booking details: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+        /**
+         * Retrieves all bookings for a specific hotel (for hotel admin).
+         *
+         * @param hotelId the hotel ID
+         * @return a list of BookingDetail objects for the hotel
+         */
+        public List<BookingDetail> getHotelBookings(int hotelId) {
+            try {
+                return bookingDAO.getBookingsByHotelId(hotelId);
+            } catch (SQLException e) {
+                System.err.println("[BookingService] Error retrieving hotel bookings: " + e.getMessage());
+                e.printStackTrace();
+                return List.of();
+            }
+        }
 }

@@ -121,6 +121,29 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
+    private void handleManageBookings() {
+        // Check if hotel is approved
+        if (userHotel == null) {
+            showAlert(Alert.AlertType.WARNING, "No Hotel", "You don't have a registered hotel yet. Please register a hotel first.");
+            return;
+        }
+
+        if (userHotel.isPending()) {
+            showAlert(Alert.AlertType.WARNING, "Hotel Not Approved", 
+                "Your hotel is pending approval from the platform administrator. You can manage bookings after approval.");
+            return;
+        }
+
+        if (userHotel.isRejected()) {
+            showAlert(Alert.AlertType.ERROR, "Hotel Rejected", 
+                "Your hotel registration was rejected. Please register a new hotel.");
+            return;
+        }
+
+        loadContent("/fxml/AdminBookingManagement.fxml");
+    }
+
+    @FXML
     private void handleLogout() {
         SessionManager.getInstance().clearSession();
         try {

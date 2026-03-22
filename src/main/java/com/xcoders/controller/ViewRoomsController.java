@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
@@ -130,33 +131,25 @@ public class ViewRoomsController {
     }
 
     private void launchBookingDialog(Room room) {
-        try (InputStream bookingDialogStream = getClass().getResourceAsStream("/fxml/RoomBooking.fxml")) {
-            if (bookingDialogStream == null) {
-                throw new IllegalStateException("RoomBooking.fxml not found on classpath");
-            }
-
-            FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(bookingDialogStream);
+        try {
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RoomBooking.fxml"));
+            Parent root = loader.load();
 
             RoomBookingController controller = loader.getController();
             controller.setRoom(room);
 
-            Stage stage = new Stage();
-            stage.setTitle("Book Room " + room.getRoomNumber());
-            stage.setScene(new Scene(root, 650, 550));
-            stage.show();
+           Stage stage = new Stage();
+           stage.initOwner(roomsTable.getScene().getWindow()); // tie to parent
+            stage.initModality(Modality.APPLICATION_MODAL);     // block main window
+            Scene scene = new Scene(root, 650, 550);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.showAndWait();
 
         } catch (Exception e) {
             System.err.println("[ViewRoomsController] Error loading booking: " + e.getMessage());
             e.printStackTrace();
-            Throwable rootCause = e;
-            while (rootCause.getCause() != null) {
-                rootCause = rootCause.getCause();
-            }
-            String details = rootCause.getMessage() != null
-                    ? rootCause.getClass().getSimpleName() + ": " + rootCause.getMessage()
-                    : e.toString();
-            showAlert("Error", "Could not open booking dialog: " + details);
+            showAlert("Error", "Could not open booking dialog: " + e.getMessage());
         }
     }
 

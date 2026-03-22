@@ -41,6 +41,9 @@
             <!-- Browse Rooms Button (for logged-in users) -->
             <Button fx:id="browseRoomsBtn" text="Browse Rooms" onAction="#onBrowseRoomsClick" style="-fx-padding: 8 20; -fx-font-size: 12; -fx-cursor: hand;" visible="false" managed="false"/>
 
+            <!-- My Bookings Button (for logged-in users) -->
+            <Button fx:id="myBookingsBtn" text="My Bookings" onAction="#onMyBookingsClick" style="-fx-padding: 8 20; -fx-font-size: 12; -fx-cursor: hand;" visible="false" managed="false"/>
+
         </HBox>
     </top>
 

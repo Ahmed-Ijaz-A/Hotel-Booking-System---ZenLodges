@@ -2,6 +2,7 @@ package com.xcoders.dao;
 
 import com.xcoders.DBConnection;
 import com.xcoders.model.Booking;
+import com.xcoders.model.BookingDetail;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -192,12 +193,97 @@ public class BookingDAO {
     }
 
     /**
+     * Retrieves booking details for a user with associated hotel and room information.
+     * Joins Booking → Room → Hotel tables.
+     *
+     * @param userId the user ID
+     * @return a list of BookingDetail objects with hotel and room information
+     * @throws SQLException if a database error occurs
+     */
+    public List<BookingDetail> getBookingDetailsForUser(int userId) throws SQLException {
+        String sql = "SELECT b.booking_id, h.name as hotel_name, r.room_number, r.type as room_type, " +
+                     "       b.check_in, b.check_out, b.status " +
+                     "FROM bookings b " +
+                     "JOIN rooms r ON b.room_id = r.room_id " +
+                     "JOIN hotels h ON r.hotel_id = h.hotel_id " +
+                     "WHERE b.user_id = ? " +
+                     "ORDER BY b.check_in DESC";
+
+        List<BookingDetail> bookingDetails = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    bookingDetails.add(extractBookingDetail(rs));
+                }
+            }
+        }
+        return bookingDetails;
+    }
+
+    /**
+     * Extracts a BookingDetail object from a ResultSet row.
+     *
+     * @param rs the ResultSet
+     * @return a BookingDetail object
+     * @throws SQLException if a database error occurs
+     */
+    private BookingDetail extractBookingDetail(ResultSet rs) throws SQLException {
+        return new BookingDetail(
+                rs.getInt("booking_id"),
+                rs.getString("hotel_name"),
+                rs.getString("room_number"),
+                rs.getString("room_type"),
+                rs.getDate("check_in"),
+                rs.getDate("check_out"),
+                rs.getString("status")
+        );
+    }
+
+    /**
      * Extracts a Booking object from a ResultSet row.
      *
      * @param rs the ResultSet
      * @return a Booking object
      * @throws SQLException if a database error occurs
      */
+        /**
+         * Retrieves booking details for a specific hotel with room information.
+         * Joins Booking → Room → Hotel tables, filtering by hotel_id.
+         *
+         * @param hotelId the hotel ID
+         * @return a list of BookingDetail objects for the hotel
+         * @throws SQLException if a database error occurs
+         */
+        public List<BookingDetail> getBookingsByHotelId(int hotelId) throws SQLException {
+            String sql = "SELECT b.booking_id, h.name as hotel_name, r.room_number, r.type as room_type, " +
+                         "       b.check_in, b.check_out, b.status " +
+                         "FROM bookings b " +
+                         "JOIN rooms r ON b.room_id = r.room_id " +
+                         "JOIN hotels h ON r.hotel_id = h.hotel_id " +
+                         "WHERE r.hotel_id = ? " +
+                         "ORDER BY b.check_in DESC";
+
+            List<BookingDetail> bookingDetails = new ArrayList<>();
+
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, hotelId);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        bookingDetails.add(extractBookingDetail(rs));
+                    }
+                }
+            }
+            return bookingDetails;
+        }
+
     private Booking extractBooking(ResultSet rs) throws SQLException {
         return new Booking(
                 rs.getInt("booking_id"),
