@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.xcoders.DBConnection;
 import com.xcoders.model.Room;
+import com.xcoders.util.DataSqlExporter;
 
 /**
  * Data-Access Object for the {@code rooms} table.
@@ -35,7 +36,11 @@ public class RoomDAO {
                 ps.setDouble(3, room.getPrice());
                 ps.setString(4, room.getStatus());
 
-                return ps.executeUpdate() > 0;
+                boolean success = ps.executeUpdate() > 0;
+                if (success) {
+                    DataSqlExporter.exportSnapshot();
+                }
+                return success;
             }
         } catch (SQLException e) {
             System.err.println("Error adding room: " + e.getMessage());

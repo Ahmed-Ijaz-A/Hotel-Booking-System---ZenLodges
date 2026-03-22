@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.xcoders.DBConnection;
 import com.xcoders.model.Hotel;
+import com.xcoders.util.DataSqlExporter;
 
 /**
  * Data Access Object for Hotel operations.
@@ -40,6 +41,7 @@ public class HotelDAO {
             if (rowsInserted > 0) {
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {
+                        DataSqlExporter.exportSnapshot();
                         return rs.getInt(1);
                     }
                 }
@@ -184,6 +186,9 @@ public class HotelDAO {
             pstmt.setInt(2, hotelId);
 
             int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                DataSqlExporter.exportSnapshot();
+            }
             return rowsUpdated > 0;
         } catch (SQLException e) {
             System.err.println("Error approving hotel: " + e.getMessage());
@@ -204,6 +209,9 @@ public class HotelDAO {
             pstmt.setInt(2, hotelId);
 
             int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                DataSqlExporter.exportSnapshot();
+            }
             return rowsUpdated > 0;
         } catch (SQLException e) {
             System.err.println("Error rejecting hotel: " + e.getMessage());
