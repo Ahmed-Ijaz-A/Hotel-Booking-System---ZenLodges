@@ -11,11 +11,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
-        Scene scene = new Scene(root);        scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Home.fxml"));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
         stage.setTitle("ZenLodges – Hotel Booking System");
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setWidth(900);
+        stage.setHeight(700);
+        stage.setResizable(true);
         stage.show();
     }
 

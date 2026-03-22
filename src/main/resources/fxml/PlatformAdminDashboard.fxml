@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.xcoders.controller.PlatformAdminDashboardController"
+            prefWidth="900" prefHeight="700">
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- SIDEBAR NAVIGATION                                         -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <left>
+        <VBox style="-fx-background-color: #1a1a2e; -fx-padding: 20;" spacing="10">
+            
+            <Label text="Platform Admin" style="-fx-text-fill: #ffffff; -fx-font-size: 16; -fx-font-weight: bold;"/>
+            <Label text="Hotel Oversight" style="-fx-text-fill: #8d8daa; -fx-font-size: 12;"/>
+            
+            <Button text="Pending Hotels" onAction="#onPendingClick" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="Approved Hotels" onAction="#onApprovedClick" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="Rejected Hotels" onAction="#onRejectedClick" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            
+            <VBox style="-fx-padding: 20 0 0 0;"/>
+            
+            <Button text="Logout" onAction="#onLogoutClick" styleClass="sidebar-btn-danger" maxWidth="Infinity"/>
+            
+        </VBox>
+    </left>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT                                                -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <center>
+        <VBox style="-fx-background-color: #f0f2f5; -fx-padding: 30;" spacing="15">
+            
+            <!-- Title -->
+            <Label fx:id="titleLabel" text="Pending Hotel Registrations" 
+                   style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;"/>
+            
+            <!-- Hotels Table -->
+            <TableView fx:id="hotelsTable" style="-fx-font-size: 13;">
+                <columns>
+                    <TableColumn text="Hotel ID" prefWidth="60">
+                        <cellValueFactory><PropertyValueFactory property="hotelId"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Hotel Name" prefWidth="150">
+                        <cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Location" prefWidth="120">
+                        <cellValueFactory><PropertyValueFactory property="location"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Type" prefWidth="100">
+                        <cellValueFactory><PropertyValueFactory property="type"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Status" prefWidth="80">
+                        <cellValueFactory><PropertyValueFactory property="status"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Actions" prefWidth="120">
+                        <cellValueFactory><PropertyValueFactory property="hotelId"/></cellValueFactory>
+                    </TableColumn>
+                </columns>
+            </TableView>
+
+            <!-- Action Buttons (for pending hotels) -->
+            <HBox fx:id="actionBox" spacing="10" style="-fx-alignment: center_left; -fx-padding: 10;">
+                <Button fx:id="approveBtn" text="Approve" onAction="#onApproveHotel" 
+                        style="-fx-padding: 8 20; -fx-background-color: #28a745; -fx-text-fill: #ffffff;"/>
+                <Button fx:id="rejectBtn" text="Reject" onAction="#onRejectHotel" 
+                        style="-fx-padding: 8 20; -fx-background-color: #dc3545; -fx-text-fill: #ffffff;"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

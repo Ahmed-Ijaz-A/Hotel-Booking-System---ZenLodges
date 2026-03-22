@@ -47,6 +47,38 @@ public class UserService {
     // ── Register ───────────────────────────────────────────
 
     /**
+     * Registers a new user with given role and returns the created user with auto-generated ID.
+     *
+     * @return the created {@link User} with ID populated, or {@code null} if registration failed.
+     */
+    public User registerUser(User user) {
+        if (user == null || user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
+            System.err.println("Registration failed: user details are incomplete.");
+            return null;
+        }
+
+        if (userDAO.emailExists(user.getEmail().trim())) {
+            System.err.println("Registration failed: email already in use.");
+            return null;
+        }
+
+        // If role not set, default to USER
+        if (user.getRole() == null || user.getRole().isBlank()) {
+            user.setRole("USER");
+        }
+        // If status not set, default to ACTIVE
+        if (user.getStatus() == null || user.getStatus().isBlank()) {
+            user.setStatus("ACTIVE");
+        }
+
+        User createdUser = userDAO.registerUserWithId(user);
+        if (createdUser == null) {
+            System.err.println("Registration failed: could not save user to database.");
+        }
+        return createdUser;
+    }
+
+    /**
      * Registers a new GUEST user after validating inputs
      * and checking for duplicate emails.
      *

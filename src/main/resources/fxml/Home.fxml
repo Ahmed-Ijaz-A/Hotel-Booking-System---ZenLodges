@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx" 
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.xcoders.controller.HomePageController"
+            stylesheets="@../styles/style.css"
+            prefWidth="900" prefHeight="700">
+
+    <!-- ╔════════════════════════════════════════════════════════════════╗ -->
+    <!-- ║                    NAVIGATION BAR (TOP)                        ║ -->
+    <!-- ╚════════════════════════════════════════════════════════════════╝ -->
+    <top>
+        <HBox styleClass="navbar" spacing="15" style="-fx-padding: 15 30; -fx-background-color: #ffffff; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0; -fx-alignment: center_left;">
+            
+            <!-- Logo -->
+            <Label text="ZenLodges" styleClass="navbar-logo" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #003cfd;"/>
+
+            <!-- Search Bar with Suggestions -->
+            <ComboBox fx:id="searchComboBox" editable="true" promptText="Search by hotel name or location..." style="-fx-padding: 8 12; -fx-font-size: 12; -fx-min-width: 300;"/>
+            <Button fx:id="searchBtn" text="Search" onAction="#onSearchClick" style="-fx-padding: 8 20; -fx-font-size: 12; -fx-font-weight: bold; -fx-base: #003cfd; -fx-text-fill: white; -fx-cursor: hand;"/>
+            
+            <!-- Spacer -->
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <!-- Login Button -->
+            <Button fx:id="loginBtn" text="Login" onAction="#onLoginClick" style="-fx-padding: 8 20; -fx-font-size: 12; -fx-cursor: hand;"/>
+
+        </HBox>
+    </top>
+
+    <!-- ╔════════════════════════════════════════════════════════════════╗ -->
+    <!-- ║                       MAIN CONTENT                             ║ -->
+    <!-- ╚════════════════════════════════════════════════════════════════╝ -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="false" style="-fx-background-color: #f8f9fa; -fx-control-inner-background: #f8f9fa;">
+            <VBox spacing="0" style="-fx-background-color: #f8f9fa;">
+            
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- HERO SECTION                                              -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <VBox spacing="30" style="-fx-padding: 100 40; -fx-background-color: #f8f9fa; -fx-alignment: center;">
+                    
+                    <!-- System Name -->
+                    <Label text="ZenLodges" style="-fx-font-size: 48; -fx-font-weight: bold; -fx-text-fill: #003cfd;"/>
+
+                    <!-- Short Description -->
+                    <Label text="Your perfect hotel booking experience starts here" style="-fx-font-size: 18; -fx-text-fill: #666666;"/>
+
+                    <!-- CTA Buttons -->
+                    <HBox spacing="20" style="-fx-alignment: center;">
+                        <Button text="Register Your Hotel" styleClass="btn-primary" onAction="#onRegisterHotelClick" style="-fx-padding: 12 40; -fx-font-size: 14; -fx-cursor: hand;"/>
+                    </HBox>
+
+                </VBox>
+
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- FEATURED HOTELS SECTION                                    -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <VBox spacing="20" style="-fx-padding: 60 40; -fx-background-color: #ffffff;">
+                    <Label text="Featured Hotels" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #003cfd;"/>
+                    <Label text="Browse our approved partner hotels" style="-fx-font-size: 14; -fx-text-fill: #666666;"/>
+                    
+                    <!-- Hotel Cards Grid -->
+                    <GridPane fx:id="hotelGridPane" hgap="20" vgap="20" style="-fx-padding: 20 0;">
+                        <columnConstraints>
+                            <javafx.scene.layout.ColumnConstraints percentWidth="33"/>
+                            <javafx.scene.layout.ColumnConstraints percentWidth="33"/>
+                            <javafx.scene.layout.ColumnConstraints percentWidth="33"/>
+                        </columnConstraints>
+                    </GridPane>
+                    
+                    <!-- Empty State -->
+                    <Label fx:id="noHotelsLabel" text="No hotels available yet. Check back soon!" 
+                           style="-fx-font-size: 14; -fx-text-fill: #95a5a6; -fx-alignment: center;"/>
+                </VBox>
+            
+            </VBox>
+        </ScrollPane>
+    </center>
+    
+    <Region fx:id="spacer" style="-fx-min-height: 20;"/>
+    <!-- ╔════════════════════════════════════════════════════════════════╗ -->
+    <!-- ║                        FOOTER (BOTTOM)                         ║ -->
+    <!-- ╚════════════════════════════════════════════════════════════════╝ -->
+    <bottom>
+        <VBox spacing="15" style="-fx-padding: 30 40; -fx-background-color: #2c3e50; -fx-fill-width: true;">
+            <!-- Footer Content -->
+            <HBox spacing="80" style="-fx-alignment: top_left;">
+                <!-- Company Info -->
+                <VBox spacing="10">
+                    <Label text="ZenLodges" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                    <Label text="Your perfect hotel booking experience" style="-fx-font-size: 12; -fx-text-fill: #bdc3c7;"/>
+                </VBox>
+                
+                <!-- Contact Info -->
+                <VBox spacing="8">
+                    <Label text="Contact Us" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                    <Label text="Email: info@zenlodges.com" style="-fx-font-size: 11; -fx-text-fill: #bdc3c7;"/>
+                    <Label text="Phone: +1-800-ZENODGES (936-6343)" style="-fx-font-size: 11; -fx-text-fill: #bdc3c7;"/>
+                    <Label text="Address: 123 Hotel Street, San Francisco, CA 94105" style="-fx-font-size: 11; -fx-text-fill: #bdc3c7;"/>
+                </VBox>
+                
+                <!-- Support Hours -->
+                <VBox spacing="8">
+                    <Label text="Support Hours" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                    <Label text="Monday - Friday: 9:00 AM - 6:00 PM" style="-fx-font-size: 11; -fx-text-fill: #bdc3c7;"/>
+                    <Label text="Saturday: 10:00 AM - 4:00 PM" style="-fx-font-size: 11; -fx-text-fill: #bdc3c7;"/>
+                    <Label text="Sunday: Closed" style="-fx-font-size: 11; -fx-text-fill: #bdc3c7;"/>
+                </VBox>
+            </HBox>
+            
+            <!-- Copyright -->
+            <Label text="© 2026 ZenLodges. All rights reserved." style="-fx-font-size: 10; -fx-text-fill: #95a5a6; -fx-padding: 15 0 0 0;" />
+        </VBox>
+    </bottom>
+
+</BorderPane>
