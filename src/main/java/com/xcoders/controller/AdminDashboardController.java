@@ -43,8 +43,14 @@ public class AdminDashboardController implements Initializable {
         if (currentUser != null) {
             List<Hotel> hotels = hotelService.getHotelsByAdminId(currentUser.getUserId());
             if (!hotels.isEmpty()) {
-                userHotel = hotels.get(0);
+                userHotel = hotels.stream()
+                        .filter(Hotel::isApproved)
+                        .findFirst()
+                        .orElse(hotels.get(0));
                 updateHotelStatusDisplay();
+            } else if (hotelStatusLabel != null) {
+                hotelStatusLabel.setText("No hotel linked to this account");
+                hotelStatusLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
             }
         }
     }
@@ -136,7 +142,8 @@ public class AdminDashboardController implements Initializable {
         try {
             Node node = FXMLLoader.load(getClass().getResource(fxmlPath));
             contentArea.getChildren().setAll(node);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Load Error", "Could not open page: " + fxmlPath + "\n" + e.getMessage());
             System.err.println("Error loading content: " + e.getMessage());
             e.printStackTrace();
         }

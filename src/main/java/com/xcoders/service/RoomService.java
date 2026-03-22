@@ -22,7 +22,13 @@ public class RoomService {
      *
      * @return {@code true} if the room was added, {@code false} otherwise.
      */
-    public boolean addRoom(String roomNumber, String type, double price, String status) {
+    public boolean addRoom(int hotelId, String roomNumber, String type, double price, String status) {
+        
+        if (hotelId <= 0) {
+        System.err.println("Add room failed: invalid hotel ID.");
+        return false;
+        }
+        
         if (roomNumber == null || roomNumber.isBlank()
                 || type == null || type.isBlank()
                 || status == null || status.isBlank()) {
@@ -35,12 +41,12 @@ public class RoomService {
             return false;
         }
 
-        if (roomDAO.roomNumberExists(roomNumber.trim())) {
+        if (roomDAO.roomNumberExists(roomNumber.trim(), hotelId)) {
             System.err.println("Add room failed: room number already exists.");
             return false;
         }
 
-        Room newRoom = new Room(roomNumber.trim(), type.trim(), price, status.trim());
+        Room newRoom = new Room(hotelId, roomNumber.trim(), type.trim(), price, status.trim());
         boolean created = roomDAO.addRoom(newRoom);
 
         if (!created) {
@@ -57,6 +63,10 @@ public class RoomService {
      *
      * @return a list of {@link Room} objects (never {@code null}).
      */
+    public List<Room> getRoomsByHotelId(int hotelId) {
+        return roomDAO.getRoomsByHotelId(hotelId);
+    }
+
     public List<Room> getAllRooms() {
         return roomDAO.getAllRooms();
     }

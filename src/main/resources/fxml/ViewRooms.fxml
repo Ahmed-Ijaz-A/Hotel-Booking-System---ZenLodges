@@ -36,6 +36,12 @@
                    styleClass="table-view">
 
             <columns>
+                <TableColumn fx:id="hotelColumn" text="Hotel ID" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="hotelId"/>
+                    </cellValueFactory>
+                </TableColumn>
+
                 <TableColumn text="Room ID" prefWidth="80">
                     <cellValueFactory>
                         <PropertyValueFactory property="roomId"/>
