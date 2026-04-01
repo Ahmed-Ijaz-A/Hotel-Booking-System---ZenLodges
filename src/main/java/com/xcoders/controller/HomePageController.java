@@ -6,25 +6,30 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.xcoders.SessionManager;
-import com.xcoders.model.User;
 import com.xcoders.model.Hotel;
 import com.xcoders.model.HotelImage;
+import com.xcoders.model.User;
 import com.xcoders.service.HotelImageService;
 import com.xcoders.service.HotelService;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -38,7 +43,6 @@ public class HomePageController implements Initializable {
     @FXML private Button searchBtn;
     @FXML private Button loginBtn;
     @FXML private Button browseRoomsBtn;
-    @FXML private Button myBookingsBtn;
     @FXML private Button heroBrowseRoomsBtn;
 
     // ── Hotel Display ──
@@ -73,9 +77,6 @@ public class HomePageController implements Initializable {
 
         browseRoomsBtn.setVisible(isLoggedInUser);
         browseRoomsBtn.setManaged(isLoggedInUser);
-
-        myBookingsBtn.setVisible(isLoggedInUser);
-        myBookingsBtn.setManaged(isLoggedInUser);
     }
 
     /**
@@ -170,7 +171,7 @@ public class HomePageController implements Initializable {
         int row = 0;
         int col = 0;
         for (Hotel hotel : hotels) {
-            VBox hotelCard = createHotelCard(hotel);
+            StackPane hotelCard = createHotelCard(hotel); // Changed from VBox to StackPane
             hotelGridPane.add(hotelCard, col, row);
 
             col++;
@@ -182,32 +183,37 @@ public class HomePageController implements Initializable {
     }
 
     /**
-     * Create a hotel card UI component
+     * Create a hotel card UI component using the new StackPane edge-to-edge design
      */
-    private VBox createHotelCard(Hotel hotel) {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(15));
-        card.setStyle("-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-border-radius: 5; "
-                + "-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);");
-        card.setPrefHeight(350);
-        card.setPrefWidth(280);
-        card.setMaxWidth(280);
+    private StackPane createHotelCard(Hotel hotel) {
+        StackPane card = new StackPane();
+        card.setStyle("-fx-cursor: hand;");
+
+        // Subtle drop shadow for the whole card
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.color(0, 0, 0, 0.15));
+        dropShadow.setRadius(15);
+        dropShadow.setSpread(0.05);
+        dropShadow.setOffsetY(8);
+        card.setEffect(dropShadow);
 
         try {
-            // Get main image for hotel
-            HotelImage mainImage = imageService.getMainImage(hotel.getHotelId());
+            // Base fallback background just in case the image fails to load
+            Region fallbackBg = new Region();
+            fallbackBg.setStyle("-fx-background-color: #d0d0d0; -fx-background-radius: 30;");
+            fallbackBg.setPrefSize(330, 220);
 
+            // 1. Setup the Background Image
             ImageView imageView = new ImageView();
-            imageView.setFitHeight(200);
-            imageView.setFitWidth(250);
+            imageView.setFitWidth(330);
+            imageView.setFitHeight(220);
             imageView.setPreserveRatio(false);
             imageView.setSmooth(true);
 
+            // Fetch image using your exact original logic
+            HotelImage mainImage = imageService.getMainImage(hotel.getHotelId());
             if (mainImage != null && !mainImage.getImagePath().isEmpty()) {
-                // Try to load the image from classpath
                 try {
-                    // Get the resource URL from classpath
-                    // imagePath is like "hotel-images/hotel_1_main_abc12345.jpg"
                     String resourcePath = "/" + mainImage.getImagePath();
                     URL resourceUrl = getClass().getResource(resourcePath);
                     
@@ -217,45 +223,56 @@ public class HomePageController implements Initializable {
                         System.out.println("[Card] Image loaded successfully: " + resourceUrl);
                     } else {
                         System.err.println("[Card] Image resource not found: " + resourcePath);
-                        imageView.setStyle("-fx-background-color: #d0d0d0;");
                     }
                 } catch (Exception e) {
-                    // Use placeholder if image fails to load
                     System.err.println("[Card] Failed to load image: " + e.getMessage());
                     e.printStackTrace();
-                    imageView.setStyle("-fx-background-color: #d0d0d0;");
                 }
-            } else {
-                // No main image available
-                imageView.setStyle("-fx-background-color: #d0d0d0;");
             }
 
-            card.getChildren().add(imageView);
+            // Clip the image for rounded corners
+            Rectangle clip = new Rectangle(330, 220);
+            clip.setArcWidth(30);
+            clip.setArcHeight(30);
+            imageView.setClip(clip);
 
-            // Hotel name
+            // 2. Dark Gradient Overlay (Makes text readable on bright photos)
+            Region gradient = new Region();
+            gradient.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); -fx-background-radius: 15;");
+            gradient.setPrefSize(330, 220);
+
+            // 3. Text Overlay Container
+            VBox textContainer = new VBox(2);
+            textContainer.setAlignment(Pos.BOTTOM_LEFT);
+            textContainer.setStyle("-fx-padding: 20;");
+
+            // Hotel Name
             Label nameLabel = new Label(hotel.getName());
-            nameLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #003cfd;");
+            nameLabel.setStyle("-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
             nameLabel.setWrapText(true);
-            card.getChildren().add(nameLabel);
 
             // Location
             Label locationLabel = new Label(hotel.getLocation());
-            locationLabel.setStyle("-fx-font-size: 12; -fx-text-fill: #666666;");
+            locationLabel.setStyle("-fx-font-size: 15; -fx-text-fill: rgba(255,255,255,0.9);");
             locationLabel.setWrapText(true);
-            card.getChildren().add(locationLabel);
 
-            // Hotel type
+            // Hotel Type (Optional sub-label to preserve your data)
             Label typeLabel = new Label("Type: " + hotel.getType());
-            typeLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #95a5a6;");
-            card.getChildren().add(typeLabel);
+            typeLabel.setStyle("-fx-font-size: 12; -fx-text-fill: rgba(255,255,255,0.6);");
+
+            // Add labels to the VBox
+            textContainer.getChildren().addAll(nameLabel, locationLabel, typeLabel);
+
+            // 4. Assemble the StackPane (Bottom to Top)
+            card.getChildren().addAll(fallbackBg, imageView, gradient, textContainer);
 
         } catch (Exception e) {
             System.err.println("[Card] Error creating hotel card: " + e.getMessage());
             e.printStackTrace();
 
-            // Show error in card
+            // Show error in card if the layout assembly fails
             Label errorLabel = new Label("Error loading hotel details");
-            errorLabel.setStyle("-fx-text-fill: #e74c3c;");
+            errorLabel.setStyle("-fx-text-fill: #e74c3c; -fx-background-color: white; -fx-padding: 10;");
             card.getChildren().add(errorLabel);
         }
 
@@ -327,29 +344,6 @@ public class HomePageController implements Initializable {
             stage.setScene(scene);
         } catch (IOException e) {
             System.err.println("Failed to load View Rooms page: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void onMyBookingsClick() {
-        User currentUser = SessionManager.getInstance().getCurrentUser();
-        if (currentUser == null || !currentUser.isUser()) {
-            SessionManager.getInstance().setPendingPostLoginPath("/fxml/BookingDashboard.fxml");
-            navigateToLogin();
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookingDashboard.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
-
-            Stage stage = (Stage) myBookingsBtn.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            System.err.println("Failed to load Booking Dashboard page: " + e.getMessage());
             e.printStackTrace();
         }
     }
