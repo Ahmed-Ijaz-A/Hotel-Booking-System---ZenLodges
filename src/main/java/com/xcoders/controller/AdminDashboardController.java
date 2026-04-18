@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -26,6 +27,11 @@ import javafx.stage.Stage;
  * Handles sidebar navigation with hotel approval status checks.
  */
 public class AdminDashboardController implements Initializable {
+
+    // ── Sidebar Buttons for dynamic highlighting ──
+    @FXML private Button btnAddRoom;
+    @FXML private Button btnViewRooms;
+    @FXML private Button btnManageBookings;
 
     @FXML private StackPane contentArea;
     @FXML private Label hotelStatusLabel;
@@ -52,6 +58,26 @@ public class AdminDashboardController implements Initializable {
                 hotelStatusLabel.setText("No hotel linked to this account");
                 hotelStatusLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
             }
+        }
+    }
+
+    // ── Helper method to handle dynamic button highlighting ──
+    private void setActiveSidebarButton(Button activeBtn) {
+        if (btnAddRoom == null || btnViewRooms == null || btnManageBookings == null) return;
+
+        // Reset all buttons to default sidebar-btn style
+        Button[] allButtons = {btnAddRoom, btnViewRooms, btnManageBookings};
+        for (Button btn : allButtons) {
+            btn.getStyleClass().remove("sidebar-btn-active");
+            if (!btn.getStyleClass().contains("sidebar-btn")) {
+                btn.getStyleClass().add("sidebar-btn");
+            }
+        }
+        
+        // Apply active style to the clicked button
+        if (activeBtn != null) {
+            activeBtn.getStyleClass().remove("sidebar-btn");
+            activeBtn.getStyleClass().add("sidebar-btn-active");
         }
     }
 
@@ -94,6 +120,7 @@ public class AdminDashboardController implements Initializable {
             return;
         }
         
+        setActiveSidebarButton(btnAddRoom); // Update UI
         loadContent("/fxml/AddRoom.fxml");
     }
 
@@ -117,6 +144,7 @@ public class AdminDashboardController implements Initializable {
             return;
         }
         
+        setActiveSidebarButton(btnViewRooms); // Update UI
         loadContent("/fxml/ViewRooms.fxml");
     }
 
@@ -140,6 +168,7 @@ public class AdminDashboardController implements Initializable {
             return;
         }
 
+        setActiveSidebarButton(btnManageBookings); // Update UI
         loadContent("/fxml/AdminBookingManagement.fxml");
     }
 

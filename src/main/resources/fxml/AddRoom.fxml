@@ -6,53 +6,46 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 <?import java.lang.String?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.xcoders.controller.AddRoomController"
-      alignment="TOP_CENTER" spacing="20"
-      styleClass="content-area">
+      alignment="TOP_CENTER" spacing="25"
+      style="-fx-background-color: rgba(26, 26, 46, 0.85); -fx-background-radius: 20; -fx-padding: 40;">
 
-    <padding>
-        <Insets top="30" right="30" bottom="30" left="30"/>
-    </padding>
+    <effect>
+        <DropShadow color="rgba(0,0,0,0.3)" radius="15" spread="0.1" offsetY="5"/>
+    </effect>
 
-    <!-- Heading -->
-    <Label text="Add New Room" styleClass="title-label">
-        <font><Font size="22"/></font>
-    </Label>
+    <VBox alignment="CENTER" spacing="5">
+        <Label text="Add New Room" style="-fx-text-fill: #ffffff; -fx-font-size: 32; -fx-font-weight: bold;"/>
+        <Label text="Enter room details below to add it to your hotel inventory" style="-fx-text-fill: #c8c8e0; -fx-font-size: 14;"/>
+    </VBox>
 
-    <!-- Form card -->
-    <VBox alignment="CENTER" spacing="15"
-          styleClass="card" maxWidth="480">
+    <VBox alignment="CENTER" spacing="25" maxWidth="500"
+          style="-fx-background-color: rgba(255, 255, 255, 0.05); -fx-background-radius: 15; -fx-padding: 40;">
 
-        <padding>
-            <Insets top="30" right="30" bottom="30" left="30"/>
-        </padding>
-
-        <GridPane hgap="12" vgap="14" alignment="CENTER">
+        <GridPane hgap="15" vgap="20" alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints minWidth="120" prefWidth="130"/>
+                <ColumnConstraints minWidth="120" prefWidth="130" halignment="RIGHT"/>
                 <ColumnConstraints minWidth="220" prefWidth="260"/>
             </columnConstraints>
 
-            <!-- Room Number -->
-            <Label text="Room Number" styleClass="form-label"
+            <Label text="Room Number" style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold;"
                    GridPane.columnIndex="0" GridPane.rowIndex="0"/>
             <TextField fx:id="roomNumberField" promptText="e.g. 101"
-                       styleClass="input-field"
+                       styleClass="input-field" prefHeight="38"
                        GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-            <!-- Type -->
-            <Label text="Type" styleClass="form-label"
+            <Label text="Type" style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold;"
                    GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <ComboBox fx:id="typeCombo" promptText="Select type"
-                      styleClass="input-field" maxWidth="1.7976931348623157E308"
+                      styleClass="input-field" maxWidth="1.7976931348623157E308" prefHeight="38"
                       GridPane.columnIndex="1" GridPane.rowIndex="1">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
@@ -64,18 +57,16 @@
                 </items>
             </ComboBox>
 
-            <!-- Price -->
-            <Label text="Price" styleClass="form-label"
+            <Label text="Price" style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold;"
                    GridPane.columnIndex="0" GridPane.rowIndex="2"/>
             <TextField fx:id="priceField" promptText="e.g. 5000.00"
-                       styleClass="input-field"
+                       styleClass="input-field" prefHeight="38"
                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <!-- Status -->
-            <Label text="Status" styleClass="form-label"
+            <Label text="Status" style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold;"
                    GridPane.columnIndex="0" GridPane.rowIndex="3"/>
             <ComboBox fx:id="statusCombo" promptText="Select status"
-                      styleClass="input-field" maxWidth="1.7976931348623157E308"
+                      styleClass="input-field" maxWidth="1.7976931348623157E308" prefHeight="38"
                       GridPane.columnIndex="1" GridPane.rowIndex="3">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
@@ -86,13 +77,12 @@
             </ComboBox>
         </GridPane>
 
-        <!-- Message label -->
         <Label fx:id="messageLabel" text="" styleClass="error-label"
-               wrapText="true" maxWidth="390"/>
+               wrapText="true" maxWidth="390" style="-fx-alignment: center;"/>
 
-        <!-- Add button -->
         <Button text="Add Room" onAction="#handleAddRoom"
-                styleClass="primary-btn" maxWidth="390" prefHeight="38"/>
+                style="-fx-background-color: #003cfd; -fx-text-fill: #ffffff; -fx-font-size: 15; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"
+                maxWidth="390" prefHeight="45"/>
 
     </VBox>
 

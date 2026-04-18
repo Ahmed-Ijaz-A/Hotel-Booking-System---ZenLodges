@@ -5,35 +5,30 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.xcoders.controller.ViewRoomsController"
-      alignment="TOP_CENTER" spacing="20"
-      styleClass="content-area">
+      alignment="TOP_CENTER" spacing="25"
+      style="-fx-background-color: rgba(26, 26, 46, 0.85); -fx-background-radius: 20; -fx-padding: 40;">
 
-    <padding>
-        <Insets top="30" right="30" bottom="30" left="30"/>
-    </padding>
+    <effect>
+        <DropShadow color="rgba(0,0,0,0.3)" radius="15" spread="0.1" offsetY="5"/>
+    </effect>
 
-    <!-- Heading -->
-    <Label text="All Rooms" styleClass="title-label">
-        <font><Font size="22"/></font>
-    </Label>
+    <VBox alignment="CENTER" spacing="5">
+        <Label text="All Rooms" style="-fx-text-fill: #ffffff; -fx-font-size: 32; -fx-font-weight: bold;"/>
+        <Label text="View and manage the inventory of your hotel rooms" style="-fx-text-fill: #c8c8e0; -fx-font-size: 14;"/>
+    </VBox>
 
-    <!-- Table card -->
-    <VBox styleClass="card" VBox.vgrow="ALWAYS">
-
-        <padding>
-            <Insets top="20" right="20" bottom="20" left="20"/>
-        </padding>
+    <VBox VBox.vgrow="ALWAYS" 
+          style="-fx-background-color: rgba(255, 255, 255, 0.05); -fx-background-radius: 15; -fx-padding: 20;">
 
         <TableView fx:id="roomsTable" VBox.vgrow="ALWAYS"
-                   styleClass="table-view">
+                   styleClass="dark-table" style="-fx-background-color: transparent;">
 
             <columns>
                 <TableColumn fx:id="hotelColumn" text="Hotel ID" prefWidth="100">
@@ -71,6 +66,7 @@
                         <PropertyValueFactory property="status"/>
                     </cellValueFactory>
                 </TableColumn>
+                
                 <TableColumn fx:id="actionColumn" text="Action" prefWidth="100"/>
             </columns>
 
