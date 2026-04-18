@@ -39,6 +39,12 @@ import javafx.stage.Stage;
  */
 public class PlatformAdminDashboardController implements Initializable {
 
+    // ── Sidebar Buttons (New additions for dynamic highlighting) ──
+    @FXML private Button btnPending;
+    @FXML private Button btnApproved;
+    @FXML private Button btnRejected;
+    @FXML private Button btnAllRooms;
+
     @FXML private TableView<Hotel> hotelsTable;
     @FXML private TableView<Room> roomsTable;
     @FXML private Label titleLabel;
@@ -67,6 +73,32 @@ public class PlatformAdminDashboardController implements Initializable {
         // Load pending hotels on startup
         loadPendingHotels();
         setHotelsMode(true);
+        
+        // Ensure the Pending button is highlighted on startup
+        setActiveSidebarButton(btnPending);
+    }
+
+    // ── Helper method to handle dynamic button highlighting ──
+    private void setActiveSidebarButton(Button activeBtn) {
+        // Safety check in case UI elements aren't fully loaded
+        if (btnPending == null || btnApproved == null || btnRejected == null || btnAllRooms == null) {
+            return;
+        }
+
+        // Reset all buttons to default sidebar-btn style
+        Button[] allButtons = {btnPending, btnApproved, btnRejected, btnAllRooms};
+        for (Button btn : allButtons) {
+            btn.getStyleClass().remove("sidebar-btn-active");
+            if (!btn.getStyleClass().contains("sidebar-btn")) {
+                btn.getStyleClass().add("sidebar-btn");
+            }
+        }
+        
+        // Apply active style to the clicked button
+        if (activeBtn != null) {
+            activeBtn.getStyleClass().remove("sidebar-btn");
+            activeBtn.getStyleClass().add("sidebar-btn-active");
+        }
     }
 
     private void configureRoomTable() {
@@ -111,6 +143,7 @@ public class PlatformAdminDashboardController implements Initializable {
      */
     @FXML
     private void onPendingClick() {
+        setActiveSidebarButton(btnPending); // Update UI
         currentView = "PENDING";
         loadPendingHotels();
         titleLabel.setText("Pending Hotel Registrations");
@@ -128,6 +161,7 @@ public class PlatformAdminDashboardController implements Initializable {
      */
     @FXML
     private void onApprovedClick() {
+        setActiveSidebarButton(btnApproved); // Update UI
         currentView = "APPROVED";
         loadApprovedHotels();
         titleLabel.setText("Approved Hotels");
@@ -145,6 +179,7 @@ public class PlatformAdminDashboardController implements Initializable {
      */
     @FXML
     private void onRejectedClick() {
+        setActiveSidebarButton(btnRejected); // Update UI
         currentView = "REJECTED";
         loadRejectedHotels();
         titleLabel.setText("Rejected Hotels");
@@ -159,6 +194,7 @@ public class PlatformAdminDashboardController implements Initializable {
 
     @FXML
     private void onAllRoomsClick() {
+        setActiveSidebarButton(btnAllRooms); // Update UI
         currentView = "ROOMS";
         titleLabel.setText("All Hotel Rooms");
         setRoomsMode();
