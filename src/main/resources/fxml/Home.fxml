@@ -24,7 +24,7 @@
             styleClass="root-pane">
 
     <top>
-        <HBox styleClass="navbar" alignment="CENTER" style="-fx-padding: 15 40;">
+        <HBox styleClass="navbar" alignment="CENTER" style="-fx-padding: 15 40; -fx-background-color: #ffffff;">
             
             <Region HBox.hgrow="ALWAYS"/>
 
@@ -51,68 +51,103 @@
         <ScrollPane fitToWidth="true" fitToHeight="false" style="-fx-background-color: transparent; -fx-control-inner-background: #f0f2f5;">
             <VBox spacing="0">
             
-                <VBox alignment="CENTER" style="-fx-background-color: #ffffff;">
-                    <HBox spacing="40" alignment="CENTER_LEFT" maxWidth="1100" style="-fx-padding: 80 40;">
+                <StackPane alignment="CENTER" style="-fx-background-color: #1a1a2e; -fx-padding: 40 40;">
+                    <ImageView fitWidth="1020" fitHeight="400" preserveRatio="false">
+                        <image>
+                            <Image url="@../images/img.jpg" backgroundLoading="true"/>
+                        </image>
+                        <clip>
+                            <Rectangle width="1020" height="400" arcWidth="30" arcHeight="30"/>
+                        </clip>
+                    </ImageView>
+
+                    <VBox alignment="CENTER" style="-fx-background-color: #1a1a2e; -fx-padding: 40 0;">
+                    
+                    <StackPane alignment="CENTER" maxWidth="1020">
                         
-                        <VBox spacing="30" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                            <HBox alignment="CENTER_LEFT" spacing="0">
+                        <ImageView fitWidth="1020" fitHeight="400" preserveRatio="false">
+                            <image>
+                                <Image url="@../images/img.jpg" backgroundLoading="true"/>
+                            </image>
+                            <clip>
+                                <Rectangle width="1020" height="400" arcWidth="30" arcHeight="30"/>
+                            </clip>
+                        </ImageView>
+
+                        <VBox spacing="30" alignment="CENTER" maxWidth="700" maxHeight="250" 
+                              styleClass="login-card" 
+                              style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-padding: 40; -fx-background-radius: 20;">
+                            
+                            <HBox alignment="CENTER" spacing="0">
                                 <Label text="Zen" styleClass="title-zen" style="-fx-font-size: 48;"/>
                                 <Label text="Lodges" styleClass="title-lodges" style="-fx-font-size: 48;"/>
                             </HBox>
+                            
                             <Label text="Your perfect hotel booking experience starts here" styleClass="hero-subheading" style="-fx-font-size: 16;"/>
-                            <HBox spacing="15" alignment="CENTER_LEFT">
+                            
+                            <HBox spacing="15" alignment="CENTER">
                                 <Button fx:id="loginBtn" text="Login" onAction="#onLoginClick" styleClass="btn-primary"/>
                                 <Button fx:id="heroBrowseRoomsBtn" text="Browse Rooms" onAction="#onBrowseRoomsClick" styleClass="btn-primary"/>
                                 <Button text="Register Your Hotel" onAction="#onRegisterHotelClick" styleClass="btn-primary"/>
                             </HBox>
+                            
                         </VBox>
-
-                        <StackPane styleClass="hero-image" alignment="CENTER">
-                            <ImageView fitWidth="420" fitHeight="280" preserveRatio="false">
-                                <image>
-                                    <Image url="@../images/img.jpg" backgroundLoading="true"/>
-                                </image>
-                                <clip>
-                                    <Rectangle width="420" height="280" arcWidth="30" arcHeight="30"/>
-                                </clip>
-                            </ImageView>
-                        </StackPane>
-                    </HBox>
+                    </StackPane>
                 </VBox>
+                </StackPane>
 
-                <VBox spacing="20" style="-fx-padding: 60 40; -fx-background-color: #f8f9fa;" alignment="CENTER">
+                <Region fx:id="spacer" style="-fx-min-height: 5; -fx-background-color: #003cfd;"/>
+
+                <VBox spacing="20" style="-fx-padding: 60 40; -fx-background-color: #1a1a2e;" alignment="CENTER">
                     <VBox spacing="20" maxWidth="1100" alignment="CENTER_LEFT">
-                        <Label text="Featured Hotels" styleClass="section-title"/>
+                        <HBox spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 20 0 0 0;">
+                            <Label text="Featured" style="-fx-text-fill: #003cfd; -fx-font-size: 28; -fx-font-weight: bold;"/>
+                            <Label text="Hotels" style="-fx-text-fill: #ffffff; -fx-font-size: 28; -fx-font-weight: bold;"/>
+                        </HBox>
                         <Label text="Browse our approved partner hotels" styleClass="hero-subheading"/>
                         
-                        <GridPane fx:id="hotelGridPane" hgap="30" vgap="30" style="-fx-padding: 20 0;">
+                        <GridPane fx:id="hotelGridPane" hgap="25" vgap="30" style="-fx-padding: 20 0;">
                             <columnConstraints>
-                                <javafx.scene.layout.ColumnConstraints percentWidth="33.33"/>
-                                <javafx.scene.layout.ColumnConstraints percentWidth="33.33"/>
-                                <javafx.scene.layout.ColumnConstraints percentWidth="33.33"/>
+                                <javafx.scene.layout.ColumnConstraints percentWidth="25.0"/>
+                                <javafx.scene.layout.ColumnConstraints percentWidth="25.0"/>
+                                <javafx.scene.layout.ColumnConstraints percentWidth="25.0"/>
+                                <javafx.scene.layout.ColumnConstraints percentWidth="25.0"/>
                             </columnConstraints>
                             
-                            <StackPane style="-fx-cursor: hand;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <StackPane style="-fx-cursor: hand;" 
+                                       minWidth="240" prefWidth="240" maxWidth="240" 
+                                       minHeight="160" prefHeight="160" maxHeight="160" 
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                       GridPane.halignment="CENTER">
                                 <effect>
                                     <DropShadow color="rgba(0,0,0,0.15)" radius="15" spread="0.05" offsetY="8"/>
                                 </effect>
                                 
-                                <ImageView fitWidth="330" fitHeight="220" preserveRatio="false">
+                                <ImageView fitWidth="240" fitHeight="160" preserveRatio="false">
                                     <image>
                                         <Image url="@../images/img.jpg" backgroundLoading="true"/>
                                     </image>
                                     <clip>
-                                        <Rectangle width="330" height="220" arcWidth="30" arcHeight="30"/>
+                                        <Rectangle width="240" height="160" arcWidth="30" arcHeight="30"/>
                                     </clip>
                                 </ImageView>
                                 
-                                <Region style="-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); -fx-background-radius: 15;"/>
+                                <Region minWidth="240" prefWidth="240" maxWidth="240" 
+                                        minHeight="160" prefHeight="160" maxHeight="160" 
+                                        style="-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%); -fx-background-radius: 15;"/>
                                 
-                                <VBox alignment="BOTTOM_LEFT" spacing="2" style="-fx-padding: 20;">
-                                    <Label text="Bobox" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
-                                    <Label text="Kandy, Sri Lanka" style="-fx-font-size: 15; -fx-text-fill: rgba(255,255,255,0.9);"/>
+                                <VBox alignment="BOTTOM_LEFT" spacing="2" 
+                                      minWidth="240" prefWidth="240" maxWidth="240" 
+                                      style="-fx-padding: 15;">
+                                    <Label text="Corporate Stays" wrapText="true" 
+                                           style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <Label text="San Francisco, California" 
+                                           style="-fx-font-size: 12; -fx-text-fill: rgba(255,255,255,0.9);"/>
+                                    <Label text="Type: Business" 
+                                           style="-fx-font-size: 11; -fx-text-fill: rgba(255,255,255,0.7);"/>
                                 </VBox>
                             </StackPane>
+                            
                             </GridPane>
                         
                         <Label fx:id="noHotelsLabel" text="No hotels available yet. Check back soon!" 
@@ -120,9 +155,9 @@
                     </VBox>
                 </VBox>
             
-                <Region fx:id="spacer" style="-fx-min-height: 40;"/>
+                <Region fx:id="spacer" style="-fx-min-height: 5; -fx-background-color: #003cfd;"/>
 
-                <VBox spacing="15" styleClass="footer" style="-fx-padding: 40;">
+                <VBox spacing="15" styleClass="footer" style="-fx-padding: 20 40; -fx-background-color: #1a1a2e;">
                     <HBox spacing="80" alignment="TOP_LEFT">
                         <VBox spacing="10">
                             <HBox alignment="CENTER_LEFT" spacing="0">

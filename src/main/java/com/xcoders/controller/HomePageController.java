@@ -175,7 +175,7 @@ public class HomePageController implements Initializable {
             hotelGridPane.add(hotelCard, col, row);
 
             col++;
-            if (col >= 3) {
+            if (col >= 4) {
                 col = 0;
                 row++;
             }
@@ -188,6 +188,12 @@ public class HomePageController implements Initializable {
     private StackPane createHotelCard(Hotel hotel) {
         StackPane card = new StackPane();
         card.setStyle("-fx-cursor: hand;");
+        
+        // --- 1. LOCK THE MAIN CARD SIZE ---
+        // This stops the entire card from stretching inside the GridPane cell
+        card.setMinSize(240, 160);
+        card.setMaxSize(240, 160);
+        card.setPrefSize(240, 160);
 
         // Subtle drop shadow for the whole card
         DropShadow dropShadow = new DropShadow();
@@ -201,12 +207,14 @@ public class HomePageController implements Initializable {
             // Base fallback background just in case the image fails to load
             Region fallbackBg = new Region();
             fallbackBg.setStyle("-fx-background-color: #d0d0d0; -fx-background-radius: 30;");
-            fallbackBg.setPrefSize(330, 220);
+            // --- 2. LOCK FALLBACK BACKGROUND SIZE ---
+            fallbackBg.setMinSize(240, 160);
+            fallbackBg.setMaxSize(240, 160);
 
-            // 1. Setup the Background Image
+            // Setup the Background Image
             ImageView imageView = new ImageView();
-            imageView.setFitWidth(330);
-            imageView.setFitHeight(220);
+            imageView.setFitWidth(240);
+            imageView.setFitHeight(160);
             imageView.setPreserveRatio(false);
             imageView.setSmooth(true);
 
@@ -220,50 +228,52 @@ public class HomePageController implements Initializable {
                     if (resourceUrl != null) {
                         Image image = new Image(resourceUrl.toExternalForm());
                         imageView.setImage(image);
-                        System.out.println("[Card] Image loaded successfully: " + resourceUrl);
-                    } else {
-                        System.err.println("[Card] Image resource not found: " + resourcePath);
                     }
                 } catch (Exception e) {
                     System.err.println("[Card] Failed to load image: " + e.getMessage());
-                    e.printStackTrace();
                 }
             }
 
             // Clip the image for rounded corners
-            Rectangle clip = new Rectangle(330, 220);
+            Rectangle clip = new Rectangle(240, 160);
             clip.setArcWidth(30);
             clip.setArcHeight(30);
             imageView.setClip(clip);
 
-            // 2. Dark Gradient Overlay (Makes text readable on bright photos)
+            // Dark Gradient Overlay (Makes text readable on bright photos)
             Region gradient = new Region();
-            gradient.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); -fx-background-radius: 15;");
-            gradient.setPrefSize(330, 220);
+            gradient.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%); -fx-background-radius: 15;");
+            // --- 3. LOCK THE GRADIENT OVERLAY SIZE ---
+            // This is what was causing the "mismatched box" look!
+            gradient.setMinSize(240, 160);
+            gradient.setMaxSize(240, 160);
 
-            // 3. Text Overlay Container
+            // Text Overlay Container
             VBox textContainer = new VBox(2);
             textContainer.setAlignment(Pos.BOTTOM_LEFT);
-            textContainer.setStyle("-fx-padding: 20;");
+            textContainer.setStyle("-fx-padding: 15;");
+            // --- 4. LOCK THE TEXT CONTAINER SIZE ---
+            textContainer.setMinSize(240, 160);
+            textContainer.setMaxSize(240, 160);
 
             // Hotel Name
             Label nameLabel = new Label(hotel.getName());
-            nameLabel.setStyle("-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
+            nameLabel.setStyle("-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
             nameLabel.setWrapText(true);
 
             // Location
             Label locationLabel = new Label(hotel.getLocation());
-            locationLabel.setStyle("-fx-font-size: 15; -fx-text-fill: rgba(255,255,255,0.9);");
+            locationLabel.setStyle("-fx-font-size: 12; -fx-text-fill: rgba(255,255,255,0.9);");
             locationLabel.setWrapText(true);
 
-            // Hotel Type (Optional sub-label to preserve your data)
+            // Hotel Type 
             Label typeLabel = new Label("Type: " + hotel.getType());
-            typeLabel.setStyle("-fx-font-size: 12; -fx-text-fill: rgba(255,255,255,0.6);");
+            typeLabel.setStyle("-fx-font-size: 11; -fx-text-fill: rgba(255,255,255,0.6);");
 
             // Add labels to the VBox
             textContainer.getChildren().addAll(nameLabel, locationLabel, typeLabel);
 
-            // 4. Assemble the StackPane (Bottom to Top)
+            // Assemble the StackPane (Bottom to Top)
             card.getChildren().addAll(fallbackBg, imageView, gradient, textContainer);
 
         } catch (Exception e) {
