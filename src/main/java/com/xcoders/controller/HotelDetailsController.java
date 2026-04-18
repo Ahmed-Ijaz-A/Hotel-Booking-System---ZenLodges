@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -29,7 +30,16 @@ import javafx.stage.Stage;
  */
 public class HotelDetailsController implements Initializable {
 
-    @FXML private VBox hotelDetailsBox;
+    // ── NEW FXML Injections ──
+    @FXML private Label hotelNameLabel;
+    @FXML private Label hotelLocationLabel;
+    @FXML private Label hotelTypeLabel;
+    @FXML private Label hotelDescriptionLabel;
+    @FXML private ImageView mainImageView;
+    @FXML private HBox referencePhotosBox;
+
+    // ── Existing FXML Injections ──
+    @FXML private VBox hotelDetailsBox; // Kept to prevent FXML load errors (legacy box)
     @FXML private VBox noHotelBox;
     @FXML private Button loginBtn;
 
@@ -103,85 +113,78 @@ public class HotelDetailsController implements Initializable {
     }
 
     /**
-     * Display hotel details with all information and photos
+     * Display hotel details with all information and photos into the specific UI elements
      */
     private void displayHotelDetails(Hotel hotel) {
-        hotelDetailsBox.getChildren().clear();
+        // Hide the "No Hotel" message
+        noHotelBox.setVisible(false);
+        noHotelBox.setManaged(false);
+
+        // Ensure the main info section is visible
+        hotelNameLabel.getParent().setVisible(true);
+        hotelNameLabel.getParent().setManaged(true);
         
         try {
-            // Hotel Name
-            Label nameLabel = new Label(hotel.getName());
-            nameLabel.setStyle("-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #003cfd;");
-            hotelDetailsBox.getChildren().add(nameLabel);
-
-            // Location and Type
-            HBox infoBox = new HBox(20);
-            Label locationLabel = new Label("📍 " + hotel.getLocation());
-            locationLabel.setStyle("-fx-font-size: 14; -fx-text-fill: #7f8c8d;");
-            Label typeLabel = new Label("🏨 Type: " + hotel.getType());
-            typeLabel.setStyle("-fx-font-size: 14; -fx-text-fill: #7f8c8d;");
-            infoBox.getChildren().addAll(locationLabel, typeLabel);
-            hotelDetailsBox.getChildren().add(infoBox);
-
-            // Description
+            // 1. Set Hotel Text Details
+            hotelNameLabel.setText(hotel.getName());
+            hotelLocationLabel.setText("📍 " + hotel.getLocation());
+            hotelTypeLabel.setText("Type: " + hotel.getType());
+            
             if (hotel.getDescription() != null && !hotel.getDescription().isEmpty()) {
-                Label descLabel = new Label("Description");
-                descLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #34495e; -fx-padding: 20 0 10 0;");
-                hotelDetailsBox.getChildren().add(descLabel);
-
-                Label descContentLabel = new Label(hotel.getDescription());
-                descContentLabel.setStyle("-fx-font-size: 12; -fx-text-fill: #555555; -fx-wrap-text: true;");
-                descContentLabel.setWrapText(true);
-                hotelDetailsBox.getChildren().add(descContentLabel);
+                hotelDescriptionLabel.setText(hotel.getDescription());
+                hotelDescriptionLabel.setVisible(true);
+                hotelDescriptionLabel.setManaged(true);
+            } else {
+                hotelDescriptionLabel.setVisible(false);
+                hotelDescriptionLabel.setManaged(false);
             }
 
-            // Main Photo
+            // 2. Set Main Photo
             HotelImage mainImage = imageService.getMainImage(hotel.getHotelId());
             if (mainImage != null && !mainImage.getImagePath().isEmpty()) {
-                Label mainPhotoLabel = new Label("Main Photo");
-                mainPhotoLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #34495e; -fx-padding: 20 0 10 0;");
-                hotelDetailsBox.getChildren().add(mainPhotoLabel);
-
-                ImageView mainImageView = new ImageView();
-                mainImageView.setFitHeight(400);
-                mainImageView.setFitWidth(800);
-                mainImageView.setPreserveRatio(false);
-                mainImageView.setSmooth(true);
-
                 try {
                     String resourcePath = "/" + mainImage.getImagePath();
                     URL resourceUrl = getClass().getResource(resourcePath);
                     if (resourceUrl != null) {
-                        Image image = new Image(resourceUrl.toExternalForm());
-                        mainImageView.setImage(image);
+                        mainImageView.setImage(new Image(resourceUrl.toExternalForm()));
+                        // Ensure the card wrapper is visible
+                        mainImageView.getParent().setVisible(true);
+                        mainImageView.getParent().setManaged(true);
                     }
                 } catch (Exception e) {
                     System.err.println("[HotelDetails] Failed to load main image: " + e.getMessage());
+                    mainImageView.getParent().setVisible(false);
+                    mainImageView.getParent().setManaged(false);
                 }
-
-                hotelDetailsBox.getChildren().add(mainImageView);
+            } else {
+                // Hide the main image card entirely if there is no image
+                mainImageView.getParent().setVisible(false);
+                mainImageView.getParent().setManaged(false);
             }
 
-            // Reference Photos Gallery
+            // 3. Set Reference Photos Gallery
+            referencePhotosBox.getChildren().clear();
             List<HotelImage> referenceImages = imageService.getReferenceImages(hotel.getHotelId());
+            
             if (referenceImages != null && !referenceImages.isEmpty()) {
-                Label galleryLabel = new Label("Photo Gallery");
-                galleryLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #34495e; -fx-padding: 30 0 15 0;");
-                hotelDetailsBox.getChildren().add(galleryLabel);
-
-                // Create grid of reference photos
-                HBox photoGrid = new HBox(15);
-                photoGrid.setStyle("-fx-padding: 0;");
+                // Show the gallery card
+                referencePhotosBox.getParent().setVisible(true);
+                referencePhotosBox.getParent().setManaged(true);
                 
                 for (HotelImage refImage : referenceImages) {
                     if (refImage.getImagePath() != null && !refImage.getImagePath().isEmpty()) {
                         try {
                             ImageView imgView = new ImageView();
-                            imgView.setFitHeight(300);
+                            imgView.setFitHeight(180);
                             imgView.setFitWidth(250);
                             imgView.setPreserveRatio(false);
                             imgView.setSmooth(true);
-                            imgView.setStyle("-fx-border-color: #e0e0e0; -fx-border-width: 1;");
+
+                            // Apply beautiful rounded corners to each gallery image!
+                            Rectangle clip = new Rectangle(250, 180);
+                            clip.setArcWidth(20);
+                            clip.setArcHeight(20);
+                            imgView.setClip(clip);
 
                             String resourcePath = "/" + refImage.getImagePath();
                             URL resourceUrl = getClass().getResource(resourcePath);
@@ -190,14 +193,16 @@ public class HotelDetailsController implements Initializable {
                                 imgView.setImage(image);
                             }
 
-                            photoGrid.getChildren().add(imgView);
+                            referencePhotosBox.getChildren().add(imgView);
                         } catch (Exception e) {
                             System.err.println("[HotelDetails] Failed to load reference image: " + e.getMessage());
                         }
                     }
                 }
-
-                hotelDetailsBox.getChildren().add(photoGrid);
+            } else {
+                // Hide the gallery card entirely if there are no reference photos
+                referencePhotosBox.getParent().setVisible(false);
+                referencePhotosBox.getParent().setManaged(false);
             }
 
         } catch (Exception e) {
@@ -208,11 +213,18 @@ public class HotelDetailsController implements Initializable {
     }
 
     /**
-     * Show "no hotel found" message
+     * Show "no hotel found" message and hide the details cards
      */
     private void showNoHotelFound() {
-        hotelDetailsBox.setVisible(false);
-        hotelDetailsBox.setManaged(false);
+        // Hide the detail wrappers
+        hotelNameLabel.getParent().setVisible(false);
+        hotelNameLabel.getParent().setManaged(false);
+        mainImageView.getParent().setVisible(false);
+        mainImageView.getParent().setManaged(false);
+        referencePhotosBox.getParent().setVisible(false);
+        referencePhotosBox.getParent().setManaged(false);
+        
+        // Show the error message
         noHotelBox.setVisible(true);
         noHotelBox.setManaged(true);
     }

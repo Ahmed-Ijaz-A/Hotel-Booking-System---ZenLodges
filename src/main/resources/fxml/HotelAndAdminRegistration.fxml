@@ -2,169 +2,184 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.xcoders.controller.HotelAndAdminRegistrationController"
-            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12;">
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.xcoders.controller.HotelAndAdminRegistrationController"
+           style="-fx-font-family: 'Segoe UI'; -fx-font-size: 13;">
 
-    <!-- Top: Navigation Bar -->
-    <top>
-        <HBox spacing="20" style="-fx-background-color: #f5f5f5; -fx-padding: 15;" alignment="CENTER_LEFT">
-            <Label text="ZenLodges" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Back to Home" onAction="#onBackClick" style="-fx-padding: 8 16; -fx-font-size: 11;"/>
-        </HBox>
-    </top>
+    <ImageView preserveRatio="false" fitWidth="${rootPane.width}" fitHeight="${rootPane.height}">
+        <image>
+            <Image url="@../images/img.jpg" backgroundLoading="true"/>
+        </image>
+    </ImageView>
 
-    <!-- Center: Registration Form -->
-    <center>
-        <ScrollPane fitToWidth="true" style="-fx-padding: 0;">
-            <VBox spacing="20" style="-fx-padding: 30;">
-                <!-- Title -->
-                <VBox spacing="5">
-                    <Label text="Register Your Hotel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
-                    <Label text="Complete both sections below. Your hotel will be pending approval from our platform administrator."
-                           style="-fx-text-fill: #7f8c8d; -fx-font-size: 11; -fx-wrap-text: true;"/>
-                </VBox>
+    <BorderPane stylesheets="@../styles/style.css" style="-fx-background-color: transparent;">
 
-                <Separator/>
-
-                <!-- ADMIN DETAILS SECTION -->
-                <VBox spacing="15">
-                    <Label text="Your Details (Hotel Admin)" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-                    
-                    <!-- Full Name -->
-                    <VBox spacing="5">
-                        <Label text="Full Name *" style="-fx-font-weight: bold;"/>
-                        <TextField fx:id="adminNameField" promptText="Your full name" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Email -->
-                    <VBox spacing="5">
-                        <Label text="Email Address *" style="-fx-font-weight: bold;"/>
-                        <TextField fx:id="adminEmailField" promptText="yourname@example.com" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Phone -->
-                    <VBox spacing="5">
-                        <Label text="Phone Number" style="-fx-font-weight: bold;"/>
-                        <TextField fx:id="adminPhoneField" promptText="+1-800-XXX-XXXX" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Username -->
-                    <VBox spacing="5">
-                        <Label text="Username *" style="-fx-font-weight: bold;"/>
-                        <TextField fx:id="usernameField" promptText="Choose a username" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Password -->
-                    <VBox spacing="5">
-                        <Label text="Password *" style="-fx-font-weight: bold;"/>
-                        <PasswordField fx:id="passwordField" promptText="Min 6 characters" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Confirm Password -->
-                    <VBox spacing="5">
-                        <Label text="Confirm Password *" style="-fx-font-weight: bold;"/>
-                        <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" style="-fx-padding: 8;"/>
-                    </VBox>
-                </VBox>
-
-                <Separator/>
-
-                <!-- HOTEL DETAILS SECTION -->
-                <VBox spacing="15">
-                    <Label text="Hotel Details" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-                    
-                    <!-- Hotel Name -->
-                    <VBox spacing="5">
-                        <Label text="Hotel Name *" style="-fx-font-weight: bold;"/>
-                        <TextField fx:id="hotelNameField" promptText="Enter hotel name" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Location -->
-                    <VBox spacing="5">
-                        <Label text="Location/Address *" style="-fx-font-weight: bold;"/>
-                        <TextField fx:id="locationField" promptText="City or full address" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Hotel Type -->
-                    <VBox spacing="5">
-                        <Label text="Hotel Type *" style="-fx-font-weight: bold;"/>
-                        <ComboBox fx:id="hotelTypeCombo" prefWidth="Infinity" style="-fx-padding: 8;"/>
-                    </VBox>
-
-                    <!-- Description -->
-                    <VBox spacing="5">
-                        <Label text="Description" style="-fx-font-weight: bold;"/>
-                        <TextArea fx:id="descriptionArea" promptText="Describe your hotel, amenities, etc." 
-                                 wrapText="true" prefRowCount="6" style="-fx-padding: 8; -fx-control-inner-background: white;"/>
-                    </VBox>
-
-                    <!-- Main Image Upload -->
-                    <VBox spacing="5">
-                        <Label text="Main Hotel Photo * (Required)" style="-fx-font-weight: bold;"/>
-                        <Label text="This will be displayed on the home page and search results"
-                               style="-fx-text-fill: #7f8c8d; -fx-font-size: 10;"/>
-                        <HBox spacing="10" alignment="CENTER_LEFT">
-                            <Button fx:id="chooseMainImageButton" text="Choose Main Photo" 
-                                   onAction="#onChooseMainImageClick" 
-                                   style="-fx-padding: 8 16; -fx-font-size: 11;"/>
-                            <Label fx:id="mainImageLabel" text="No file selected" 
-                                  style="-fx-text-fill: #95a5a6;"/>
-                        </HBox>
-                    </VBox>
-
-                    <!-- Reference Images Upload -->
-                    <VBox spacing="5">
-                        <Label text="Additional Reference Photos (Optional - 0 to 5 photos)"
-                               style="-fx-font-weight: bold;"/>
-                        <Label text="These will be shown in your hotel gallery"
-                               style="-fx-text-fill: #7f8c8d; -fx-font-size: 10;"/>
-                        <Button fx:id="chooseReferenceImagesButton" text="Choose Reference Photos" 
-                               onAction="#onChooseReferenceImagesClick" 
-                               style="-fx-padding: 8 16; -fx-font-size: 11;"/>
-                        <Label fx:id="referenceImagesLabel" text="No files selected (0/5)" 
-                              style="-fx-text-fill: #95a5a6;"/>
-                        <VBox fx:id="selectedFilesContainer" spacing="3"/>
-                    </VBox>
-                </VBox>
-
-                <Separator/>
-
-                <!-- Error/Status Message -->
-                <Label fx:id="statusLabel" text="" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;"/>
-
-                <!-- Buttons -->
-                <HBox spacing="10" alignment="CENTER_RIGHT">
-                    <Button text="Cancel" onAction="#onCancelClick" 
-                           style="-fx-padding: 10 30; -fx-font-size: 12;" />
-                    <Button text="Register Hotel &amp; Account" onAction="#onSubmitClick"
-                           style="-fx-padding: 10 30; -fx-font-size: 12; -fx-font-weight: bold; -fx-base: #3498db; -fx-text-fill: white;"/>
+        <top>
+            <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 20 40;">
+                <HBox alignment="CENTER" spacing="0">
+                    <Label text="Zen" style="-fx-text-fill: #003cfd; -fx-font-size: 36; -fx-font-weight: bold;"/>
+                    <Label text="Lodges" style="-fx-text-fill: #1a1a2e; -fx-font-size: 36; -fx-font-weight: bold;"/>
                 </HBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Back to Home" onAction="#onBackClick" 
+                        style="-fx-background-color: #003cfd; -fx-border-color: #003cfd; -fx-border-radius: 6; -fx-background-radius: 6; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;"/>
+            </HBox>
+        </top>
 
-                <!-- Success Message -->
-                <VBox fx:id="successBox" spacing="10" style="-fx-border-color: #27ae60; -fx-border-width: 1; -fx-padding: 15; -fx-border-radius: 5; -fx-background-color: #f0fdf4;" visible="false">
-                    <Label text="✓ Registration Successful!" 
-                          style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
-                    <VBox spacing="5">
-                        <Label text="Your account has been created and your hotel has been submitted for approval."
-                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
-                        <Label text="Next Steps:"
-                              style="-fx-text-fill: #27ae60; -fx-font-weight: bold;"/>
-                        <Label text="1. Log in with your credentials"
-                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
-                        <Label text="2. Check Admin Dashboard for approval status"
-                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
-                        <Label text="3. Once approved, you can begin adding rooms"
-                              style="-fx-text-fill: #27ae60; -fx-wrap-text: true;"/>
+        <center>
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 20;">
+                
+                <StackPane alignment="TOP_CENTER">
+                    
+                    <VBox spacing="25" maxWidth="750" 
+                          style="-fx-background-color: rgba(26, 26, 46, 0.90); -fx-background-radius: 20; -fx-padding: 40 50;">
+                        
+                        <effect>
+                            <DropShadow color="rgba(0,0,0,0.4)" radius="20" spread="0.1" offsetY="8"/>
+                        </effect>
+
+                        <VBox spacing="8" alignment="CENTER">
+                            <Label text="Register Your Hotel" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                            <Label text="Complete both sections below. Your hotel will be pending approval from our platform administrator."
+                                   style="-fx-text-fill: #c8c8e0; -fx-font-size: 14; -fx-wrap-text: true; -fx-text-alignment: center;"/>
+                        </VBox>
+
+                        <Region style="-fx-min-height: 2; -fx-background-color: rgba(255,255,255,0.1);"/>
+
+                        <VBox spacing="20">
+                            <Label text="1. Your Details (Hotel Admin)" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #003cfd;"/>
+                            
+                            <GridPane hgap="20" vgap="15">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50"/>
+                                    <ColumnConstraints percentWidth="50"/>
+                                </columnConstraints>
+
+                                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Full Name *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <TextField fx:id="adminNameField" promptText="Your full name" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+
+                                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Email Address *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <TextField fx:id="adminEmailField" promptText="yourname@example.com" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+
+                                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <Label text="Phone Number" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <TextField fx:id="adminPhoneField" promptText="+1-800-XXX-XXXX" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+
+                                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label text="Username *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <TextField fx:id="usernameField" promptText="Choose a username" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+
+                                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                    <Label text="Password *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <PasswordField fx:id="passwordField" promptText="Min 6 characters" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+
+                                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Label text="Confirm Password *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+                            </GridPane>
+                        </VBox>
+
+                        <Region style="-fx-min-height: 2; -fx-background-color: rgba(255,255,255,0.1);"/>
+
+                        <VBox spacing="20">
+                            <Label text="2. Hotel Details" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #003cfd;"/>
+                            
+                            <VBox spacing="6">
+                                <Label text="Hotel Name *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                <TextField fx:id="hotelNameField" promptText="Enter hotel name" styleClass="input-field" prefHeight="38"/>
+                            </VBox>
+
+                            <GridPane hgap="20" vgap="15">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="60"/>
+                                    <ColumnConstraints percentWidth="40"/>
+                                </columnConstraints>
+
+                                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Location/Address *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <TextField fx:id="locationField" promptText="City or full address" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+
+                                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Hotel Type *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <ComboBox fx:id="hotelTypeCombo" prefWidth="Infinity" styleClass="input-field" prefHeight="38"/>
+                                </VBox>
+                            </GridPane>
+
+                            <VBox spacing="6">
+                                <Label text="Description" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                <TextArea fx:id="descriptionArea" promptText="Describe your hotel, amenities, etc." 
+                                          wrapText="true" prefRowCount="4" style="-fx-control-inner-background: #f8f9fa; -fx-background-radius: 6; -fx-border-color: #ced4da; -fx-border-radius: 6;"/>
+                            </VBox>
+
+                            <HBox spacing="30">
+                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                    <Label text="Main Hotel Photo *" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <Label text="Displayed on home page &amp; search" style="-fx-text-fill: #8d8daa; -fx-font-size: 11;"/>
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Button fx:id="chooseMainImageButton" text="Choose Photo" onAction="#onChooseMainImageClick" 
+                                                style="-fx-background-color: #4a4a6a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 16; -fx-cursor: hand;"/>
+                                        <Label fx:id="mainImageLabel" text="No file selected" style="-fx-text-fill: #c8c8e0; -fx-font-size: 11;"/>
+                                    </HBox>
+                                </VBox>
+
+                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                    <Label text="Gallery Photos (Optional)" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                                    <Label text="Up to 5 additional reference photos" style="-fx-text-fill: #8d8daa; -fx-font-size: 11;"/>
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Button fx:id="chooseReferenceImagesButton" text="Choose Photos" onAction="#onChooseReferenceImagesClick" 
+                                                style="-fx-background-color: #4a4a6a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 16; -fx-cursor: hand;"/>
+                                        <Label fx:id="referenceImagesLabel" text="(0/5)" style="-fx-text-fill: #c8c8e0; -fx-font-size: 11;"/>
+                                    </HBox>
+                                    <VBox fx:id="selectedFilesContainer" spacing="3"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <Region style="-fx-min-height: 2; -fx-background-color: rgba(255,255,255,0.1);"/>
+
+                        <Label fx:id="statusLabel" text="" style="-fx-text-fill: #ff6b6b; -fx-font-weight: bold; -fx-alignment: center; -fx-pref-width: 1000;"/>
+
+                        <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                            <Button text="Cancel" onAction="#onCancelClick" 
+                                    style="-fx-background-color: transparent; -fx-text-fill: #c8c8e0; -fx-font-weight: bold; -fx-padding: 12 30; -fx-cursor: hand; -fx-font-size: 14;" />
+                            <Button text="Register Hotel &amp; Account" onAction="#onSubmitClick"
+                                    style="-fx-background-color: #003cfd; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 12 40; -fx-cursor: hand; -fx-font-size: 14;"/>
+                        </HBox>
+
+                        <VBox fx:id="successBox" spacing="12" visible="false" managed="false"
+                              style="-fx-border-color: #2ecc71; -fx-border-width: 2; -fx-padding: 20; -fx-border-radius: 10; -fx-background-color: rgba(46, 204, 113, 0.1);">
+                            <Label text="✓ Registration Successful!" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2ecc71;"/>
+                            <VBox spacing="6">
+                                <Label text="Your account has been created and your hotel is submitted for approval." style="-fx-text-fill: #e8f8f5;"/>
+                                <Label text="Next Steps:" style="-fx-text-fill: #2ecc71; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
+                                <Label text="1. Log in with your credentials" style="-fx-text-fill: #e8f8f5;"/>
+                                <Label text="2. Check Admin Dashboard for approval status" style="-fx-text-fill: #e8f8f5;"/>
+                                <Label text="3. Once approved, you can begin adding rooms" style="-fx-text-fill: #e8f8f5;"/>
+                            </VBox>
+                            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                                <Button text="Go to Login" onAction="#onGoToLoginClick"
+                                        style="-fx-background-color: #2ecc71; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 10 25; -fx-cursor: hand;"/>
+                            </HBox>
+                        </VBox>
+
                     </VBox>
-                    <Button text="Go to Login" onAction="#onGoToLoginClick"
-                           style="-fx-padding: 8 20; -fx-font-size: 11;"/>
-                </VBox>
-            </VBox>
-        </ScrollPane>
-    </center>
+                </StackPane>
+            </ScrollPane>
+        </center>
 
-</BorderPane>
+    </BorderPane>
+</StackPane>

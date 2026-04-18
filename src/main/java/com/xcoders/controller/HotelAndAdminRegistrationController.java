@@ -81,6 +81,7 @@ public class HotelAndAdminRegistrationController implements Initializable {
         // Clear status initially
         statusLabel.setText("");
         successBox.setVisible(false);
+        successBox.setManaged(false); // Ensure it takes up no space initially
     }
 
     /**
@@ -241,8 +242,9 @@ public class HotelAndAdminRegistrationController implements Initializable {
      */
     private void showError(String message) {
         statusLabel.setText(message);
-        statusLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+        statusLabel.setStyle("-fx-text-fill: #ff6b6b; -fx-font-weight: bold;");
         successBox.setVisible(false);
+        successBox.setManaged(false); // Hide completely
     }
 
     /**
@@ -251,6 +253,7 @@ public class HotelAndAdminRegistrationController implements Initializable {
     private void showSuccess() {
         statusLabel.setText("");
         successBox.setVisible(true);
+        successBox.setManaged(true); // Allocate space in layout
     }
 
     /**
@@ -277,6 +280,7 @@ public class HotelAndAdminRegistrationController implements Initializable {
         clearForm();
         statusLabel.setText("");
         successBox.setVisible(false);
+        successBox.setManaged(false);
     }
 
     /**
@@ -328,7 +332,7 @@ public class HotelAndAdminRegistrationController implements Initializable {
             if (HotelImageService.isValidImageFile(selectedFile)) {
                 selectedMainImageFile = selectedFile;
                 mainImageLabel.setText(selectedFile.getName());
-                mainImageLabel.setStyle("-fx-text-fill: #27ae60;");
+                mainImageLabel.setStyle("-fx-text-fill: #2ecc71;"); // Updated to neon green for dark theme
             } else {
                 showError("Invalid image format. Please select JPG, PNG, GIF, or BMP.");
                 mainImageLabel.setText("No valid file selected");
@@ -377,14 +381,14 @@ public class HotelAndAdminRegistrationController implements Initializable {
     private void updateReferenceImagesDisplay() {
         referenceImagesLabel.setText(selectedReferenceImageFiles.size() + "/5 photos selected");
         if (selectedReferenceImageFiles.size() > 0) {
-            referenceImagesLabel.setStyle("-fx-text-fill: #27ae60;");
+            referenceImagesLabel.setStyle("-fx-text-fill: #2ecc71;"); // Updated to neon green for dark theme
         }
         
         // Display selected filenames
         selectedFilesContainer.getChildren().clear();
         for (File file : selectedReferenceImageFiles) {
             Label fileLabel = new Label("• " + file.getName());
-            fileLabel.setStyle("-fx-text-fill: #27ae60;");
+            fileLabel.setStyle("-fx-text-fill: #2ecc71;"); // Updated to neon green for dark theme
             selectedFilesContainer.getChildren().add(fileLabel);
         }
     }
