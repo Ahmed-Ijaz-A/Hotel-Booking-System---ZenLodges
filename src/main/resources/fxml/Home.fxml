@@ -40,8 +40,10 @@
             
             <Region HBox.hgrow="ALWAYS"/>
             
-            <HBox alignment="CENTER_RIGHT">
+            <HBox alignment="CENTER_RIGHT" spacing="10">
                 <Button fx:id="browseRoomsBtn" text="Browse Rooms" onAction="#onBrowseRoomsClick" 
+                        styleClass="btn-primary" visible="false" managed="false"/>
+                <Button fx:id="myBookingsBtn" text="My Bookings" onAction="#onMyBookingsClick" 
                         styleClass="btn-primary" visible="false" managed="false"/>
             </HBox>
         </HBox>

@@ -44,6 +44,7 @@ public class HomePageController implements Initializable {
     @FXML private Button loginBtn;
     @FXML private Button browseRoomsBtn;
     @FXML private Button heroBrowseRoomsBtn;
+    @FXML private Button myBookingsBtn;
 
     // ── Hotel Display ──
     @FXML private GridPane hotelGridPane;
@@ -77,6 +78,9 @@ public class HomePageController implements Initializable {
 
         browseRoomsBtn.setVisible(isLoggedInUser);
         browseRoomsBtn.setManaged(isLoggedInUser);
+
+        myBookingsBtn.setVisible(isLoggedInUser);
+        myBookingsBtn.setManaged(isLoggedInUser);
     }
 
     /**
@@ -354,6 +358,29 @@ public class HomePageController implements Initializable {
             stage.setScene(scene);
         } catch (IOException e) {
             System.err.println("Failed to load View Rooms page: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onMyBookingsClick() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null || !currentUser.isUser()) {
+            SessionManager.getInstance().setPendingPostLoginPath("/fxml/BookingDashboard.fxml");
+            navigateToLogin();
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookingDashboard.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+
+            Stage stage = (Stage) myBookingsBtn.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.err.println("Failed to load Booking Dashboard page: " + e.getMessage());
             e.printStackTrace();
         }
     }
