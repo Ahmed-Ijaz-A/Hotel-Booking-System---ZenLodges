@@ -1,5 +1,7 @@
 package com.xcoders.controller;
 
+import java.util.List;
+
 import com.xcoders.SessionManager;
 import com.xcoders.model.Hotel;
 import com.xcoders.model.Room;
@@ -22,11 +24,9 @@ import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
-import java.util.List;
-
 public class ViewRoomsController {
 
+    @FXML private Button backBtn;
     @FXML private TableView<Room> roomsTable;
     @FXML private TableColumn<Room, String> hotelColumn;
     @FXML private TableColumn<Room, Room> actionColumn;
@@ -159,5 +159,22 @@ public class ViewRoomsController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void onBackClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Home.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+
+            Stage stage = (Stage) backBtn.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception e) {
+            System.err.println("[ViewRoomsController] Error loading home page: " + e.getMessage());
+            e.printStackTrace();
+            showAlert("Error", "Could not navigate back to home: " + e.getMessage());
+        }
     }
 }

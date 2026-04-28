@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -19,10 +21,15 @@
         <DropShadow color="rgba(0,0,0,0.3)" radius="15" spread="0.1" offsetY="5"/>
     </effect>
 
-    <VBox alignment="CENTER" spacing="5">
-        <Label text="All Rooms" style="-fx-text-fill: #ffffff; -fx-font-size: 32; -fx-font-weight: bold;"/>
-        <Label text="View and manage the inventory of your hotel rooms" style="-fx-text-fill: #c8c8e0; -fx-font-size: 14;"/>
-    </VBox>
+    <HBox alignment="TOP_LEFT" spacing="15">
+        <Button fx:id="backBtn" text="Back to Home" 
+                style="-fx-padding: 8 15; -fx-font-size: 12; -fx-text-fill: #ffffff; -fx-background-color: #003cfd; -fx-cursor: hand; -fx-background-radius: 5;"
+                onAction="#onBackClick"/>
+        <VBox alignment="CENTER" spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="All Rooms" style="-fx-text-fill: #ffffff; -fx-font-size: 32; -fx-font-weight: bold;"/>
+            <Label text="View and manage the inventory of your hotel rooms" style="-fx-text-fill: #c8c8e0; -fx-font-size: 14;"/>
+        </VBox>
+    </HBox>
 
     <VBox VBox.vgrow="ALWAYS" 
           style="-fx-background-color: rgba(255, 255, 255, 0.05); -fx-background-radius: 15; -fx-padding: 20;">
